@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wealthy Labs 3.0 | Financial Intelligence</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons (using CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chosen Palette: Wealth & Wisdom -->
+    <!-- Primary: #0F172A (Slate 900 - Dark Blue/Black for depth) -->
+    <!-- Secondary: #F59E0B (Amber 500 - Gold for wealth accents) -->
+    <!-- Background: #F8FAFC (Slate 50 - Clean, professional light background) -->
+    <!-- Text: #334155 (Slate 700 - Readable dark grey) -->
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    <!-- Application Structure Plan:
+         1. Header: Branding (Logo) + Navigation + Social Links (Critical for user request).
+         2. Hero: Banner Image + Tagline "Wealthy Labs 3.0".
+         3. About: Brief static text explaining the mission.
+         4. Interlink Labs (Future Content): A placeholder section for upcoming expansions.
+         5. Community Hub (Interactive):
+            - Member Registration Form (Simulates data entry).
+            - Live Poll (Interactive Chart.js viz).
+            - Data Management (Client-side CSV Export to simulate "Save to Excel").
+         6. Footer: Copyright and Socials.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used inline (FontAwesome used for icons). NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 text-slate-700 font-sans leading-relaxed flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <!-- Logo Image Fallback to Icon if image missing -->
+                <div class="w-10 h-10 bg-white rounded-full overflow-hidden flex items-center justify-center border-2 border-amber-500">
+                    <img src="./Wealthy Labs ICON Logo.jpg" alt="WL Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fa-solid fa-flask text-slate-900\'></i>'">
+                </div>
+                <span class="text-xl font-bold tracking-wide">Wealthy Labs <span class="text-amber-500">3.0</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="hover:text-amber-400 transition">About</a>
+                <a href="#interlink" class="hover:text-amber-400 transition">Interlink Labs</a>
+                <a href="#polls" class="hover:text-amber-400 transition">Polls</a>
+                <a href="#join" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-full transition">Join Us</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 pb-4 px-4">
+            <a href="#about" class="block py-2 hover:text-amber-400">About</a>
+            <a href="#interlink" class="block py-2 hover:text-amber-400">Interlink Labs</a>
+            <a href="#polls" class="block py-2 hover:text-amber-400">Polls</a>
+            <a href="#join" class="block py-2 text-amber-500 font-bold">Join Us</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative w-full h-64 md:h-96 bg-slate-800 flex items-center justify-center overflow-hidden">
+        <!-- Banner Image -->
+        <img src="./Wealthy Labs Banner.jpg" alt="Wealthy Labs Banner" class="absolute inset-0 w-full h-full object-cover opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-md">
+                Wealthy Labs <span class="text-amber-500">3.0</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-200 mb-8 font-light">
+                Innovating Financial Intelligence & Data-Driven Wealth Creation
+            </p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://x.com/prasanna3001" target="_blank" class="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded hover:bg-slate-800 transition border border-slate-700">
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <span>@prasanna3001</span>
+                </a>
+                <a href="https://youtube.com/@wealthylabs3001" target="_blank" class="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+                    <i class="fa-brands fa-youtube"></i>
+                    <span>@wealthylabs3001</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-12 space-y-20">
+
+        <!-- About Section -->
+        <section id="about" class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-slate-900 mb-6 relative inline-block">
+                Our Mission
+                <span class="absolute bottom-0 left-0 w-full h-1 bg-amber-500 rounded"></span>
+            </h2>
+            <p class="text-lg text-slate-600 mb-8 leading-relaxed">
+                Welcome to <strong class="text-slate-900">Wealthy Labs 3.0</strong>. We are a dedicated research and education initiative focused on decoding the mechanisms of modern wealth. Through data analysis, community insights, and financial experiments, we provide the tools you need to navigate the complex economy.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
+                    <i class="fa-solid fa-chart-line text-4xl text-slate-700 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Market Analysis</h3>
+                    <p class="text-sm">Deep dives into market trends and emerging opportunities.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
+                    <i class="fa-solid fa-flask text-4xl text-slate-700 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Experiments</h3>
+                    <p class="text-sm">Testing hypotheses in real-time to find what works.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
+                    <i class="fa-solid fa-users text-4xl text-slate-700 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Community</h3>
+                    <p class="text-sm">Crowdsourced wisdom and collaborative growth.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interlink Labs Section -->
+        <section id="interlink" class="bg-slate-100 rounded-2xl p-8 md:p-12 border border-slate-200">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Interlink Labs</h2>
+                    <span class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold mb-4 uppercase tracking-wide">Coming Soon</span>
+                    <p class="text-slate-600 mb-6">
+                        The next evolution of our ecosystem. <strong>Interlink Labs</strong> will focus on the connectivity between digital assets, global markets, and personal finance strategies.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center text-slate-700">
+                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Advanced Cross-Chain Analysis
+                        </li>
+                        <li class="flex items-center text-slate-700">
+                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Automated Portfolio Trackers
+                        </li>
+                        <li class="flex items-center text-slate-700">
+                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Exclusive Research Papers
+                        </li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="w-full max-w-sm h-64 bg-slate-800 rounded-lg shadow-inner flex items-center justify-center relative overflow-hidden group cursor-pointer">
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <i class="fa-solid fa-network-wired text-8xl text-slate-600 group-hover:text-amber-500 transition duration-500 transform group-hover:scale-110"></i>
+                        <div class="absolute bottom-4 text-slate-400 text-sm">Stay Tuned for Updates</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Data Section -->
+        <section id="polls" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            <!-- Left: Member Registration Form -->
+            <div id="join" class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Join the Lab</h2>
+                <p class="text-sm text-slate-500 mb-6">Sign up to receive updates and participate in our research. Data is stored locally for this demo.</p>
+                
+                <form id="memberForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
+                        <input type="text" id="userName" required class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                        <input type="email" id="userEmail" required class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition" placeholder="john@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Area of Interest</label>
+                        <select id="userInterest" class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none bg-white">
+                            <option value="Crypto">Crypto Assets</option>
+                            <option value="Stocks">Stock Market</option>
+                            <option value="RealEstate">Real Estate</option>
+                            <option value="Tech">Tech Investing</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded hover:bg-slate-800 transition shadow-lg transform active:scale-95">
+                        Register Member
+                    </button>
+                </form>
+
+                <!-- Data Management Area -->
+                <div class="mt-8 pt-6 border-t border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">Admin Data Tools</h3>
+                    <div class="flex flex-col space-y-2">
+                        <p class="text-xs text-slate-500 italic">Since this website is static (GitHub Pages), we simulate a database by allowing you to download collected entries as an Excel-compatible CSV file.</p>
+                        <button id="downloadBtn" class="flex items-center justify-center space-x-2 w-full border border-green-600 text-green-700 hover:bg-green-50 font-semibold py-2 rounded transition">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span>Download Data (Excel/CSV)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Live Poll -->
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Community Poll</h2>
+                        <p class="text-sm text-slate-500">What topic should Wealthy Labs cover next?</p>
+                    </div>
+                    <div class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded animate-pulse">
+                        LIVE
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-container mb-6">
+                    <canvas id="pollChart"></canvas>
+                </div>
+
+                <!-- Voting Buttons -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="vote('DeFi')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
+                        Defi 2.0
+                    </button>
+                    <button onclick="vote('AI')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
+                        AI Trading
+                    </button>
+                    <button onclick="vote('Macro')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
+                        Global Macro
+                    </button>
+                    <button onclick="vote('NFTs')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
+                        NFT Utility
+                    </button>
+                </div>
+                <p id="vote-feedback" class="text-center text-sm text-amber-600 font-semibold mt-3 h-5"></p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="text-white text-xl font-bold mb-2">Wealthy Labs 3.0</h3>
+                    <p class="text-sm max-w-xs mx-auto md:mx-0">Empowering individuals with data-driven financial strategies.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://x.com/prasanna3001" class="text-2xl hover:text-white transition transform hover:-translate-y-1"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://youtube.com/@wealthylabs3001" class="text-2xl hover:text-red-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="text-2xl hover:text-blue-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" class="text-2xl hover:text-pink-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-xs">
+                <p>&copy; 2024 Wealthy Labs 3.0. All Rights Reserved.</p>
+                <p class="mt-2">Designed for Github Pages Hosting.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Mobile Menu Logic ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // --- Data Storage (Simulation) ---
+        // In a real static site, we store data in JS memory or LocalStorage.
+        // The "Download" function allows extraction to Excel/Drive.
+        let memberData = [
+            { name: "Admin User", email: "admin@wealthylabs.com", interest: "All", date: new Date().toLocaleDateString() }
+        ];
+
+        // --- Chart.js Poll Logic ---
+        const ctx = document.getElementById('pollChart').getContext('2d');
+        
+        // Initial Data
+        let pollData = {
+            labels: ['DeFi 2.0', 'AI Trading', 'Global Macro', 'NFT Utility'],
+            datasets: [{
+                label: 'Votes',
+                data: [12, 19, 8, 5], // Starting mock numbers
+                backgroundColor: [
+                    'rgba(245, 158, 11, 0.7)', // Amber
+                    'rgba(51, 65, 85, 0.7)',   // Slate
+                    'rgba(100, 116, 139, 0.7)', // Light Slate
+                    'rgba(203, 213, 225, 0.7)'  // Grey
+                ],
+                borderColor: [
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(51, 65, 85, 1)',
+                    'rgba(100, 116, 139, 1)',
+                    'rgba(203, 213, 225, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const pollChart = new Chart(ctx, {
+            type: 'bar',
+            data: pollData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw + ' Votes';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Vote Function
+        function vote(topic) {
+            let index = 0;
+            if (topic === 'AI') index = 1;
+            if (topic === 'Macro') index = 2;
+            if (topic === 'NFTs') index = 3;
+
+            // Update Chart Data
+            pollChart.data.datasets[0].data[index]++;
+            pollChart.update();
+
+            // Feedback UI
+            const feedback = document.getElementById('vote-feedback');
+            feedback.textContent = `Thanks for voting for ${topic === 'AI' ? 'AI Trading' : topic}!`;
+            setTimeout(() => {
+                feedback.textContent = '';
+            }, 3000);
+        }
+
+        // --- Form Submission Logic ---
+        const form = document.getElementById('memberForm');
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const interest = document.getElementById('userInterest').value;
+            
+            // Add to local array
+            memberData.push({
+                name: name,
+                email: email,
+                interest: interest,
+                date: new Date().toLocaleDateString()
+            });
+
+            // Feedback
+            alert(`Welcome to the Lab, ${name}! Your details have been recorded locally.`);
+            form.reset();
+        });
+
+        // --- CSV Export Logic (Save to Excel) ---
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            // 1. Convert memberData to CSV format
+            const headers = ["Name", "Email", "Interest", "Date Joined"];
+            const rows = memberData.map(member => [member.name, member.email, member.interest, member.date]);
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Add Header Row
+            csvContent += headers.join(",") + "\r\n";
+            
+            // Add Data Rows
+            rows.forEach(rowArray => {
+                let row = rowArray.join(",");
+                csvContent += row + "\r\n";
+            });
+
+            // 2. Create Download Link
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "wealthy_labs_members.csv");
+            document.body.appendChild(link); // Required for FF
+            
+            // 3. Trigger Download
+            link.click();
+            document.body.removeChild(link);
+        });
+
+    </script>
+    <!-- Visualization & Content Choices:
+         - Chart.js Bar Chart: Chosen for the poll results because it allows easy visual comparison of votes.
+         - Interactive Form: Uses Vanilla JS to capture data and push to a local array.
+         - CSV Export: Since we cannot write directly to a user's Google Drive from a static HTML file without OAuth complexity, generating a CSV client-side is the standard "static" solution. The user can then drag-drop this file into Google Sheets.
+         - Layout: Stacked sections (Hero -> About -> Interactive) guide the user from brand awareness to engagement.
+    -->
+</body>
+</html>
