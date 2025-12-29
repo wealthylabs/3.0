@@ -3,449 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wealthy Labs 3.0 | Financial Intelligence</title>
+    <title>Wealthy Labs 3.0 | Financial Knowledge Academy</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Font Awesome for Icons (using CDN) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chosen Palette: Wealth & Wisdom -->
-    <!-- Primary: #0F172A (Slate 900 - Dark Blue/Black for depth) -->
-    <!-- Secondary: #F59E0B (Amber 500 - Gold for wealth accents) -->
-    <!-- Background: #F8FAFC (Slate 50 - Clean, professional light background) -->
-    <!-- Text: #334155 (Slate 700 - Readable dark grey) -->
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        :root {
+            --accent: #D69E2E;
+            --bg: #FAFAFA;
+            --text-main: #1A1C1E;
         }
 
-        .chart-container {
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Banner & Logo */
+        .full-banner {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Watermark - Side Note Style */
+        .wl-side-note {
+            position: fixed;
+            left: 20px;
+            bottom: 50%;
+            transform: rotate(-90deg) translateX(50%);
+            transform-origin: left bottom;
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(0,0,0,0.15);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Navigation Styles */
+        .sidebar-item {
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .sidebar-item:hover {
+            background-color: #F3F4F6;
+            color: var(--accent);
+        }
+
+        .sidebar-item.active {
+            background-color: white;
+            color: var(--accent);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Charts */
+        .chart-box {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+            height: 320px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+
+        /* Section Transitions */
+        .section-view { display: none; }
+        .section-view.active { display: block; animation: sectionFade 0.4s ease-out; }
+        @keyframes sectionFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
+
+        .social-chip {
+            transition: transform 0.2s ease;
+        }
+        .social-chip:hover {
+            transform: translateY(-2px);
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
         }
     </style>
+    
     <!-- Application Structure Plan:
-         1. Header: Branding (Logo) + Navigation + Social Links (Critical for user request).
-         2. Hero: Banner Image + Tagline "Wealthy Labs 3.0".
-         3. About: Brief static text explaining the mission.
-         4. Interlink Labs (Future Content): A placeholder section for upcoming expansions.
-         5. Community Hub (Interactive):
-            - Member Registration Form (Simulates data entry).
-            - Live Poll (Interactive Chart.js viz).
-            - Data Management (Client-side CSV Export to simulate "Save to Excel").
-         6. Footer: Copyright and Socials.
+         1. Full-Width Header: Banner Image -> Sticky Navbar with Logo & Horizontal Social Connects.
+         2. Middle Content Area: Left Navigation (Sidebar) and Right Content (Dynamic Views).
+         3. Full-Width Footer: Comprehensive sitemap and full social directory.
+         4. Branding: Side-note watermark "Wealthy Labs 3.0" + hashtags #interlink #ITLG #ITL.
     -->
-    <!-- CONFIRMATION: NO SVG graphics used inline (FontAwesome used for icons). NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="bg-slate-50 text-slate-700 font-sans leading-relaxed flex flex-col min-h-screen">
+<body class="antialiased">
 
-    <!-- Navigation -->
-    <nav class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <!-- Logo Image Fallback to Icon if image missing -->
-                <div class="w-10 h-10 bg-white rounded-full overflow-hidden flex items-center justify-center border-2 border-amber-500">
-                    <img src="./Wealthy Labs ICON Logo.jpg" alt="WL Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fa-solid fa-flask text-slate-900\'></i>'">
+    <!-- SIDE NOTE WATERMARK -->
+    <div class="wl-side-note">Wealthy Labs 3.0</div>
+
+    <!-- FULL WIDTH HEADER -->
+    <header class="w-full bg-white shadow-sm">
+        <!-- Branding & Quick Links Bar -->
+        <nav class="sticky top-0 bg-white border-b border-gray-100 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row justify-between items-center gap-6">
+                <!-- Logo Area -->
+                <div class="flex items-center gap-4">
+                    <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
+                    <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Wealthy Labs 3.0</p>
+                        <p class="text-xs font-bold text-yellow-600">Learn, Earn - the web 3 way.</p>
+                    </div>
                 </div>
-                <span class="text-xl font-bold tracking-wide">Wealthy Labs <span class="text-amber-500">3.0</span></span>
-            </div>
-            
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#about" class="hover:text-amber-400 transition">About</a>
-                <a href="#interlink" class="hover:text-amber-400 transition">Interlink Labs</a>
-                <a href="#polls" class="hover:text-amber-400 transition">Polls</a>
-                <a href="#join" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-full transition">Join Us</a>
-            </div>
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-2xl focus:outline-none">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-        <!-- Mobile Menu (Hidden by default) -->
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-800 pb-4 px-4">
-            <a href="#about" class="block py-2 hover:text-amber-400">About</a>
-            <a href="#interlink" class="block py-2 hover:text-amber-400">Interlink Labs</a>
-            <a href="#polls" class="block py-2 hover:text-amber-400">Polls</a>
-            <a href="#join" class="block py-2 text-amber-500 font-bold">Join Us</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="relative w-full h-64 md:h-96 bg-slate-800 flex items-center justify-center overflow-hidden">
-        <!-- Banner Image -->
-        <img src="./Wealthy Labs Banner.jpg" alt="Wealthy Labs Banner" class="absolute inset-0 w-full h-full object-cover opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
-        
-        <div class="relative z-10 text-center px-4 max-w-4xl">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-md">
-                Wealthy Labs <span class="text-amber-500">3.0</span>
-            </h1>
-            <p class="text-lg md:text-2xl text-slate-200 mb-8 font-light">
-                Innovating Financial Intelligence & Data-Driven Wealth Creation
-            </p>
-            <div class="flex justify-center space-x-6">
-                <a href="https://x.com/prasanna3001" target="_blank" class="flex items-center space-x-2 bg-black text-white px-4 py-2 rounded hover:bg-slate-800 transition border border-slate-700">
-                    <i class="fa-brands fa-x-twitter"></i>
-                    <span>@prasanna3001</span>
-                </a>
-                <a href="https://youtube.com/@wealthylabs3001" target="_blank" class="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
-                    <i class="fa-brands fa-youtube"></i>
-                    <span>@wealthylabs3001</span>
-                </a>
+                <!-- Quick Connect Socials -->
+                <!-- <div class="flex flex-wrap justify-center items-center gap-5">
+                    <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="social-chip text-green-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-whatsapp text-lg"></i> <span class="hidden xl:inline">WhatsApp</span>
+                    </a>
+                    <a href="https://t.me/Prasanna3001" target="_blank" class="social-chip text-blue-500 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-telegram text-lg"></i> <span class="hidden xl:inline">Telegram</span>
+                    </a>
+                    <a href="https://x.com/prasanna3001" target="_blank" class="social-chip text-gray-900 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-x-twitter text-lg"></i> <span class="hidden xl:inline">Twitter</span>
+                    </a>
+                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="social-chip text-red-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-youtube text-lg"></i> <span class="hidden xl:inline">YouTube</span>
+                    </a>
+                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-blue-800"><i class="fab fa-facebook w-5"></i> Facebook Page</a>
+                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Threads</a>
+                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Instagram</a>
+                </div> -->
+                <!-- Community Card -->
+                <div class="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="font-bold text-sm mb-2">Join the Community</h4>
+                        <p class="text-[11px] opacity-60 mb-4">Connect with @prasanna3001 for real-time market alpha.</p>
+                        <div class="flex gap-2">
+                            <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="social-chip text-green-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-whatsapp text-lg"></i> <span class="hidden xl:inline">WhatsApp</span>
+                    </a>
+                    <a href="https://t.me/Prasanna3001" target="_blank" class="social-chip text-blue-500 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-telegram text-lg"></i> <span class="hidden xl:inline">Telegram</span>
+                    </a>
+                    <a href="https://x.com/prasanna3001" target="_blank" class="social-chip text-white-900 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-x-twitter text-lg"></i> <span class="hidden xl:inline">Twitter</span>
+                    </a>
+                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="social-chip text-red-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-youtube text-lg"></i> <span class="hidden xl:inline">YouTube</span>
+                    </a>
+                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-blue-800"><i class="fab fa-facebook w-5"></i> Facebook Page</a>
+                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Threads</a>
+                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Instagram</a>
+                        </div>
+                    </div>
+                    <i class="fas fa-users absolute -right-4 -bottom-4 text-7xl opacity-5"></i>
+                </div>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-12 space-y-20">
+    <!-- MIDDLE SECTION -->
+    <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="w-full lg:w-72 flex-shrink-0">
+            <div class="lg:sticky lg:top-28 space-y-6">
+                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 px-4">Navigation</p>
+                    <nav class="space-y-1">
+                        <div class="sidebar-item active" onclick="switchSection('knowledge', this)">
+                            <i class="fas fa-book-open w-5"></i> Financial Knowledge
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('training', this)">
+                            <i class="fas fa-graduation-cap w-5"></i> Free Training
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('earnings', this)">
+                            <i class="fas fa-wallet w-5"></i> Earning Hub
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('insights', this)">
+                            <i class="fas fa-chart-line w-5"></i> Market Insights
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('protection', this)">
+                            <i class="fas fa-shield-alt w-5"></i> Protection
+                        </div>
+                    </nav>
+                </div>
 
-        <!-- About Section -->
-        <section id="about" class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-6 relative inline-block">
-                Our Mission
-                <span class="absolute bottom-0 left-0 w-full h-1 bg-amber-500 rounded"></span>
-            </h2>
-            <p class="text-lg text-slate-600 mb-8 leading-relaxed">
-                Welcome to <strong class="text-slate-900">Wealthy Labs 3.0</strong>. We are a dedicated research and education initiative focused on decoding the mechanisms of modern wealth. Through data analysis, community insights, and financial experiments, we provide the tools you need to navigate the complex economy.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
-                    <i class="fa-solid fa-chart-line text-4xl text-slate-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Market Analysis</h3>
-                    <p class="text-sm">Deep dives into market trends and emerging opportunities.</p>
-                </div>
-                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
-                    <i class="fa-solid fa-flask text-4xl text-slate-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Experiments</h3>
-                    <p class="text-sm">Testing hypotheses in real-time to find what works.</p>
-                </div>
-                <div class="p-6 bg-white rounded-xl shadow-md border-t-4 border-amber-500 hover:shadow-lg transition">
-                    <i class="fa-solid fa-users text-4xl text-slate-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Community</h3>
-                    <p class="text-sm">Crowdsourced wisdom and collaborative growth.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interlink Labs Section -->
-        <section id="interlink" class="bg-slate-100 rounded-2xl p-8 md:p-12 border border-slate-200">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Interlink Labs</h2>
-                    <span class="inline-block bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold mb-4 uppercase tracking-wide">Coming Soon</span>
-                    <p class="text-slate-600 mb-6">
-                        The next evolution of our ecosystem. <strong>Interlink Labs</strong> will focus on the connectivity between digital assets, global markets, and personal finance strategies.
-                    </p>
-                    <ul class="space-y-3">
-                        <li class="flex items-center text-slate-700">
-                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Advanced Cross-Chain Analysis
-                        </li>
-                        <li class="flex items-center text-slate-700">
-                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Automated Portfolio Trackers
-                        </li>
-                        <li class="flex items-center text-slate-700">
-                            <i class="fa-solid fa-circle-check text-green-500 mr-3"></i> Exclusive Research Papers
-                        </li>
-                    </ul>
-                </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <div class="w-full max-w-sm h-64 bg-slate-800 rounded-lg shadow-inner flex items-center justify-center relative overflow-hidden group cursor-pointer">
-                        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                        <i class="fa-solid fa-network-wired text-8xl text-slate-600 group-hover:text-amber-500 transition duration-500 transform group-hover:scale-110"></i>
-                        <div class="absolute bottom-4 text-slate-400 text-sm">Stay Tuned for Updates</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Data Section -->
-        <section id="polls" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
-            <!-- Left: Member Registration Form -->
-            <div id="join" class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
-                <h2 class="text-2xl font-bold text-slate-900 mb-2">Join the Lab</h2>
-                <p class="text-sm text-slate-500 mb-6">Sign up to receive updates and participate in our research. Data is stored locally for this demo.</p>
                 
-                <form id="memberForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-                        <input type="text" id="userName" required class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition" placeholder="John Doe">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-                        <input type="email" id="userEmail" required class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition" placeholder="john@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Area of Interest</label>
-                        <select id="userInterest" class="w-full px-4 py-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none bg-white">
-                            <option value="Crypto">Crypto Assets</option>
-                            <option value="Stocks">Stock Market</option>
-                            <option value="RealEstate">Real Estate</option>
-                            <option value="Tech">Tech Investing</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-slate-900 text-white font-bold py-3 rounded hover:bg-slate-800 transition shadow-lg transform active:scale-95">
-                        Register Member
-                    </button>
-                </form>
-
-                <!-- Data Management Area -->
-                <div class="mt-8 pt-6 border-t border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-3">Admin Data Tools</h3>
-                    <div class="flex flex-col space-y-2">
-                        <p class="text-xs text-slate-500 italic">Since this website is static (GitHub Pages), we simulate a database by allowing you to download collected entries as an Excel-compatible CSV file.</p>
-                        <button id="downloadBtn" class="flex items-center justify-center space-x-2 w-full border border-green-600 text-green-700 hover:bg-green-50 font-semibold py-2 rounded transition">
-                            <i class="fa-solid fa-file-excel"></i>
-                            <span>Download Data (Excel/CSV)</span>
-                        </button>
-                    </div>
-                </div>
             </div>
+        </aside>
 
-            <!-- Right: Live Poll -->
-            <div class="bg-white p-8 rounded-xl shadow-lg border border-slate-100">
-                <div class="flex justify-between items-start mb-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900">Community Poll</h2>
-                        <p class="text-sm text-slate-500">What topic should Wealthy Labs cover next?</p>
+        <!-- CONTENT AREA -->
+        <main class="flex-1 min-w-0">
+            
+            <!-- Section: Financial Knowledge -->
+            <section id="knowledge-section" class="section-view active">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Financial Articles</h2>
+                    <p class="text-gray-500">Expert deep-dives into the global economy and local markets.</p>
+                </div>
+                
+                <div id="articles-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Articles -->
+                </div>
+            </section>
+
+            <!-- Section: Free Training -->
+            <section id="training-section" class="section-view">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Free Training Academy</h2>
+                    <p class="text-gray-500">Level up your skills with our complimentary courses.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Skill Distribution</h4>
+                        <div class="chart-box">
+                            <canvas id="trainingChart"></canvas>
+                        </div>
                     </div>
-                    <div class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded animate-pulse">
-                        LIVE
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-center">
+                        <h4 class="font-bold text-gray-800 mb-2">Current Curriculum</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                <span class="bg-yellow-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                                <div>
+                                    <p class="text-sm font-bold">Python for Trading</p>
+                                    <p class="text-[10px] text-gray-400">Automation & Logic</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                <span class="bg-gray-200 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                                <div>
+                                    <p class="text-sm font-bold">Smart Contract Basics</p>
+                                    <p class="text-[10px] text-gray-400">Solidity Intro</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </section>
 
-                <!-- Chart Container -->
-                <div class="chart-container mb-6">
-                    <canvas id="pollChart"></canvas>
+            <!-- Section: Earning Hub -->
+            <section id="earnings-section" class="section-view">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Earning Opportunities</h2>
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50">
+                            <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                <th class="px-8 py-4">Opportunity</th>
+                                <th class="px-8 py-4">Difficulty</th>
+                                <th class="px-8 py-4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <tr>
+                                <td class="px-8 py-6">
+                                    <p class="font-bold text-gray-800">Interlink Node Setup</p>
+                                    <p class="text-[10px] text-gray-400">Technical testnet reward program.</p>
+                                </td>
+                                <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold">ADVANCED</span></td>
+                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">JOIN LAB</button></td>
+                            </tr>
+                            <tr>
+                                <td class="px-8 py-6">
+                                    <p class="font-bold text-gray-800">Verified Airdrops 101</p>
+                                    <p class="text-[10px] text-gray-400">Daily social tasks for tokens.</p>
+                                </td>
+                                <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">EASY</span></td>
+                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">VIEW STEPS</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </section>
 
-                <!-- Voting Buttons -->
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="vote('DeFi')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
-                        Defi 2.0
-                    </button>
-                    <button onclick="vote('AI')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
-                        AI Trading
-                    </button>
-                    <button onclick="vote('Macro')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
-                        Global Macro
-                    </button>
-                    <button onclick="vote('NFTs')" class="vote-btn border border-slate-200 hover:border-amber-500 hover:bg-amber-50 py-2 rounded text-sm font-medium transition">
-                        NFT Utility
-                    </button>
+            <!-- Section: Market Insights -->
+            <section id="insights-section" class="section-view">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Market Visualization</h2>
+                <div class="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm">
+                    <h4 class="font-bold text-gray-800 mb-8">Global Market Sentiment Index</h4>
+                    <div class="chart-box">
+                        <canvas id="marketChart"></canvas>
+                    </div>
                 </div>
-                <p id="vote-feedback" class="text-center text-sm text-amber-600 font-semibold mt-3 h-5"></p>
-            </div>
+            </section>
 
-        </section>
+        </main>
+    </div>
 
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-10">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-                <div class="mb-6 md:mb-0 text-center md:text-left">
-                    <h3 class="text-white text-xl font-bold mb-2">Wealthy Labs 3.0</h3>
-                    <p class="text-sm max-w-xs mx-auto md:mx-0">Empowering individuals with data-driven financial strategies.</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="https://x.com/prasanna3001" class="text-2xl hover:text-white transition transform hover:-translate-y-1"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://youtube.com/@wealthylabs3001" class="text-2xl hover:text-red-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#" class="text-2xl hover:text-blue-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#" class="text-2xl hover:text-pink-500 transition transform hover:-translate-y-1"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-            </div>
-            <div class="border-t border-slate-800 pt-8 text-center text-xs">
-                <p>&copy; 2024 Wealthy Labs 3.0. All Rights Reserved.</p>
-                <p class="mt-2">Designed for Github Pages Hosting.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript Logic -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- Mobile Menu Logic ---
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
+        const sections = ['knowledge', 'training', 'earnings', 'insights', 'protection'];
+        const articlesContainer = document.getElementById('articles-feed');
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // --- Data Storage (Simulation) ---
-        // In a real static site, we store data in JS memory or LocalStorage.
-        // The "Download" function allows extraction to Excel/Drive.
-        let memberData = [
-            { name: "Admin User", email: "admin@wealthylabs.com", interest: "All", date: new Date().toLocaleDateString() }
+        // Data Store
+        const articles = [
+            { id: 1, title: "The Modular Thesis: Future of #interlink", cat: "Insights", excerpt: "Why infrastructure-centric protocols are outperforming standard layer-1s in the 2025 cycle." },
+            { id: 2, title: "Python for Non-Coders: Part 1", cat: "Training", excerpt: "Setting up your first trading bot environment using zero-cost cloud tools." },
+            { id: 3, title: "Global Inflation & Hard Assets", cat: "Economy", excerpt: "A deep dive into why diversification into digital gold is no longer optional." },
+            { id: 4, title: "DeFi Security Checklist", cat: "Protection", excerpt: "10 things every trader must do before connecting their wallet to a new dApp." }
         ];
 
-        // --- Chart.js Poll Logic ---
-        const ctx = document.getElementById('pollChart').getContext('2d');
-        
-        // Initial Data
-        let pollData = {
-            labels: ['DeFi 2.0', 'AI Trading', 'Global Macro', 'NFT Utility'],
-            datasets: [{
-                label: 'Votes',
-                data: [12, 19, 8, 5], // Starting mock numbers
-                backgroundColor: [
-                    'rgba(245, 158, 11, 0.7)', // Amber
-                    'rgba(51, 65, 85, 0.7)',   // Slate
-                    'rgba(100, 116, 139, 0.7)', // Light Slate
-                    'rgba(203, 213, 225, 0.7)'  // Grey
-                ],
-                borderColor: [
-                    'rgba(245, 158, 11, 1)',
-                    'rgba(51, 65, 85, 1)',
-                    'rgba(100, 116, 139, 1)',
-                    'rgba(203, 213, 225, 1)'
-                ],
-                borderWidth: 1
-            }]
-        };
+        // Section Switcher
+        function switchSection(id, btn) {
+            sections.forEach(s => document.getElementById(`${s}-section`).classList.remove('active'));
+            document.getElementById(`${id}-section`).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
 
-        const pollChart = new Chart(ctx, {
-            type: 'bar',
-            data: pollData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            display: false
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.raw + ' Votes';
-                            }
-                        }
-                    }
-                }
-            }
-        });
+            window.scrollTo({ top: 380, behavior: 'smooth' });
 
-        // Vote Function
-        function vote(topic) {
-            let index = 0;
-            if (topic === 'AI') index = 1;
-            if (topic === 'Macro') index = 2;
-            if (topic === 'NFTs') index = 3;
-
-            // Update Chart Data
-            pollChart.data.datasets[0].data[index]++;
-            pollChart.update();
-
-            // Feedback UI
-            const feedback = document.getElementById('vote-feedback');
-            feedback.textContent = `Thanks for voting for ${topic === 'AI' ? 'AI Trading' : topic}!`;
-            setTimeout(() => {
-                feedback.textContent = '';
-            }, 3000);
+            if(id === 'training') initTrainingChart();
+            if(id === 'insights') initMarketChart();
         }
 
-        // --- Form Submission Logic ---
-        const form = document.getElementById('memberForm');
-        
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const interest = document.getElementById('userInterest').value;
-            
-            // Add to local array
-            memberData.push({
-                name: name,
-                email: email,
-                interest: interest,
-                date: new Date().toLocaleDateString()
+        // Render Articles
+        function renderArticles() {
+            articlesContainer.innerHTML = '';
+            articles.forEach(a => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-[9px] font-black text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded uppercase tracking-widest">${a.cat}</span>
+                    </div>
+                    <h3 class="text-xl font-extrabold text-gray-800 mb-2 leading-tight">${a.title}</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 flex-1">${a.excerpt}</p>
+                    <div class="pt-6 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-gray-300 uppercase">WL 3.0 Report</span>
+                        <button class="text-xs font-black text-gray-900 border-b-2 border-gray-900 hover:text-yellow-600 hover:border-yellow-600 pb-0.5">LEARN MORE</button>
+                    </div>
+                `;
+                articlesContainer.appendChild(card);
             });
+        }
 
-            // Feedback
-            alert(`Welcome to the Lab, ${name}! Your details have been recorded locally.`);
-            form.reset();
-        });
+        // --- CHARTS ---
+        let trainingC = null, marketC = null;
 
-        // --- CSV Export Logic (Save to Excel) ---
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            // 1. Convert memberData to CSV format
-            const headers = ["Name", "Email", "Interest", "Date Joined"];
-            const rows = memberData.map(member => [member.name, member.email, member.interest, member.date]);
-            
-            let csvContent = "data:text/csv;charset=utf-8,";
-            
-            // Add Header Row
-            csvContent += headers.join(",") + "\r\n";
-            
-            // Add Data Rows
-            rows.forEach(rowArray => {
-                let row = rowArray.join(",");
-                csvContent += row + "\r\n";
+        function initTrainingChart() {
+            const ctx = document.getElementById('trainingChart');
+            if(!ctx || trainingC) return;
+            trainingC = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Coding', 'Trading', 'Economy', 'Security', 'DeFi'],
+                    datasets: [{
+                        label: 'Demand',
+                        data: [95, 88, 72, 90, 85],
+                        backgroundColor: 'rgba(214, 158, 46, 0.2)',
+                        borderColor: '#D69E2E',
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
             });
+        }
 
-            // 2. Create Download Link
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "wealthy_labs_members.csv");
-            document.body.appendChild(link); // Required for FF
-            
-            // 3. Trigger Download
-            link.click();
-            document.body.removeChild(link);
-        });
+        function initMarketChart() {
+            const ctx = document.getElementById('marketChart');
+            if(!ctx || marketC) return;
+            marketC = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Market Health',
+                        data: [65, 59, 80, 81, 76, 95],
+                        borderColor: '#111827',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(214, 158, 46, 0.05)'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
 
+        window.onload = renderArticles;
     </script>
-    <!-- Visualization & Content Choices:
-         - Chart.js Bar Chart: Chosen for the poll results because it allows easy visual comparison of votes.
-         - Interactive Form: Uses Vanilla JS to capture data and push to a local array.
-         - CSV Export: Since we cannot write directly to a user's Google Drive from a static HTML file without OAuth complexity, generating a CSV client-side is the standard "static" solution. The user can then drag-drop this file into Google Sheets.
-         - Layout: Stacked sections (Hero -> About -> Interactive) guide the user from brand awareness to engagement.
-    -->
 </body>
 </html>
