@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wealthy Labs 3.0 | Learn, Earn - the web 3 way.</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --accent: #D69E2E;
+            --bg: #FAFAFA;
+            --text-main: #1A1C1E;
+            --header-height: 84px;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow: hidden; /* we'll manage scrolling inside the content area */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fixed header */
+        header.site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            z-index: 60;
+            background: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        /* reserve space for header */
+        .page-frame {
+            margin-top: var(--header-height);
+            height: calc(100vh - var(--header-height));
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* container that holds aside + main */
+        .page-inner {
+            width: 100%;
+            max-width: 1120px; /* matches max-w-7xl approx */
+            padding: 24px;
+            display: flex;
+            gap: 1.25rem;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar */
+        aside#site-sidebar {
+            width: 100%;
+            max-width: 288px;
+            flex-shrink: 0;
+        }
+        /* On larger screens the sidebar stays in place; on mobile it's toggled */
+        .sidebar-panel {
+            height: 100%;
+            overflow: auto; /* allow sidebar internal scroll if content overflows */
+        }
+
+        /* Main content area scrolls only */
+        main.page-content {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Watermark */
+        .wl-side-note {
+            position: fixed;
+            left: 20px;
+            bottom: 50%;
+            transform: rotate(-90deg) translateX(50%);
+            transform-origin: left bottom;
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(0,0,0,0.12);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        /* Navigation Styles */
+        .sidebar-item {
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #6B7280;
+        }
+        .sidebar-item:hover { background-color: #F3F4F6; color: var(--accent); }
+        .sidebar-item.active { background-color: white; color: var(--accent); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+        /* Chart box - will scale with container height */
+        .chart-box {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+
+        /* Section Transitions */
+        .section-view { display: none; }
+        .section-view.active { display: block; animation: sectionFade 0.4s ease-out; }
+        @keyframes sectionFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .social-chip { transition: transform 0.2s ease; }
+        .social-chip:hover { transform: translateY(-2px); }
+
+        .logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+
+        /* Mobile sidebar overlay */
+        .mobile-sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.98);
+            z-index: 70;
+            overflow: auto;
+            display: none;
+            padding: 1rem;
+        }
+        .mobile-sidebar.open { display: block; }
+
+        /* Responsive tweaks */
+        @media (max-width: 1023px) {
+            .page-inner { padding: 16px; }
+            .logo { width: 56px; height: 56px; }
+            .chart-box { height: 260px; }
+        }
+        @media (max-width: 640px) {
+            header .max-w-7xl { padding-left: 12px; padding-right: 12px }
+            .chart-box { height: 220px; }
+        }
+    </style>
+
+</head>
+<body class="antialiased">
+
+    <!-- SIDE NOTE WATERMARK -->
+    <div class="wl-side-note">Wealthy Labs 3.0</div>
+
+    <!-- FULL WIDTH HEADER -->
+    <header class="w-full bg-white shadow-sm">
+        <!-- Branding & Quick Links Bar -->
+        <nav class="sticky top-0 bg-white border-b border-gray-100 z-50">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row justify-between items-center gap-6">
+                <!-- Logo Area -->
+                <div class="flex items-center gap-4">
+                    <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
+                    <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
+                    <div>
+                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Wealthy Labs 3.0</p>
+                        <p class="text-xs font-bold text-yellow-600">Learn, Earn - the web 3 way.</p>
+                    </div>
+                </div>
+
+                
+                <!-- Community Card -->
+                <div class="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="font-bold text-sm mb-2">Join the Community</h4>
+                        <p class="text-[11px] opacity-60 mb-4">Connect with @prasanna3001 for real-time market alpha.</p>
+                        <div class="flex gap-2">
+                            <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="social-chip text-green-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-whatsapp text-lg"></i> <span class="hidden xl:inline">WhatsApp</span>
+                    </a>
+                    <a href="https://t.me/Prasanna3001" target="_blank" class="social-chip text-blue-500 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-telegram text-lg"></i> <span class="hidden xl:inline">Telegram</span>
+                    </a>
+                    <a href="https://x.com/prasanna3001" target="_blank" class="social-chip text-white-900 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-x-twitter text-lg"></i> <span class="hidden xl:inline">Twitter</span>
+                    </a>
+                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="social-chip text-red-600 flex items-center gap-2 text-sm font-bold">
+                        <i class="fab fa-youtube text-lg"></i> <span class="hidden xl:inline">YouTube</span>
+                    </a>
+                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-blue-800"><i class="fab fa-facebook w-5"></i> Facebook Page</a>
+                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Threads</a>
+                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Instagram</a>
+                        </div>
+                    </div>
+                    <i class="fas fa-users absolute -right-4 -bottom-4 text-7xl opacity-5"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MIDDLE SECTION -->
+    <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="w-full lg:w-72 flex-shrink-0">
+            <div class="lg:sticky lg:top-28 space-y-6">
+                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 px-4">Navigation</p>
+                    <nav class="space-y-1">
+                        <div class="sidebar-item active" onclick="switchSection('knowledge', this)">
+                            <i class="fas fa-book-open w-5"></i> Financial Knowledge
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('training', this)">
+                            <i class="fas fa-graduation-cap w-5"></i> Free Training
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('earnings', this)">
+                            <i class="fas fa-wallet w-5"></i> Earning Hub
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('insights', this)">
+                            <i class="fas fa-chart-line w-5"></i> Market Insights
+                        </div>
+                        <div class="sidebar-item" onclick="switchSection('protection', this)">
+                            <i class="fas fa-shield-alt w-5"></i> Protection
+                        </div>
+                    </nav>
+                </div>
+
+                
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <main class="flex-1 min-w-0">
+            
+            <!-- Section: Financial Knowledge -->
+            <section id="knowledge-section" class="section-view active">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Financial Articles</h2>
+                    <p class="text-gray-500">Expert deep-dives into the global economy and local markets.</p>
+                </div>
+                
+                <div id="articles-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Articles -->
+                </div>
+            </section>
+
+            <!-- Section: Free Training -->
+            <section id="training-section" class="section-view">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Free Training Academy</h2>
+                    <p class="text-gray-500">Level up your skills with our complimentary courses.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+                        <h4 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Skill Distribution</h4>
+                        <div class="chart-box">
+                            <canvas id="trainingChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-center">
+                        <h4 class="font-bold text-gray-800 mb-2">Current Curriculum</h4>
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                <span class="bg-yellow-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                                <div>
+                                    <p class="text-sm font-bold">Python for Trading</p>
+                                    <p class="text-[10px] text-gray-400">Automation & Logic</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                <span class="bg-gray-200 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                                <div>
+                                    <p class="text-sm font-bold">Smart Contract Basics</p>
+                                    <p class="text-[10px] text-gray-400">Solidity Intro</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Earning Hub -->
+            <section id="earnings-section" class="section-view">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Earning Opportunities</h2>
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50">
+                            <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                <th class="px-8 py-4">Opportunity</th>
+                                <th class="px-8 py-4">Difficulty</th>
+                                <th class="px-8 py-4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <tr>
+                                <td class="px-8 py-6">
+                                    <p class="font-bold text-gray-800">Interlink Node Setup</p>
+                                    <p class="text-[10px] text-gray-400">Technical testnet reward program.</p>
+                                </td>
+                                <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold">ADVANCED</span></td>
+                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">JOIN LAB</button></td>
+                            </tr>
+                            <tr>
+                                <td class="px-8 py-6">
+                                    <p class="font-bold text-gray-800">Verified Airdrops 101</p>
+                                    <p class="text-[10px] text-gray-400">Daily social tasks for tokens.</p>
+                                </td>
+                                <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">EASY</span></td>
+                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">VIEW STEPS</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Market Insights -->
+            <section id="insights-section" class="section-view">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Market Visualization</h2>
+                <div class="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm">
+                    <h4 class="font-bold text-gray-800 mb-8">Global Market Sentiment Index</h4>
+                    <div class="chart-box">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const sections = ['knowledge', 'training', 'earnings', 'insights', 'protection'];
+        const articlesContainer = document.getElementById('articles-feed');
+
+        // Data Store
+        const articles = [
+            { id: 1, title: "The Modular Thesis: Future of #interlink", cat: "Insights", excerpt: "Why infrastructure-centric protocols are outperforming standard layer-1s in the 2025 cycle." },
+            { id: 2, title: "Python for Non-Coders: Part 1", cat: "Training", excerpt: "Setting up your first trading bot environment using zero-cost cloud tools." },
+            { id: 3, title: "Global Inflation & Hard Assets", cat: "Economy", excerpt: "A deep dive into why diversification into digital gold is no longer optional." },
+            { id: 4, title: "DeFi Security Checklist", cat: "Protection", excerpt: "10 things every trader must do before connecting their wallet to a new dApp." }
+        ];
+
+        // Section Switcher
+        function switchSection(id, btn) {
+            sections.forEach(s => document.getElementById(`${s}-section`).classList.remove('active'));
+            document.getElementById(`${id}-section`).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            btn.classList.add('active');
+
+            window.scrollTo({ top: 380, behavior: 'smooth' });
+
+            if(id === 'training') initTrainingChart();
+            if(id === 'insights') initMarketChart();
+        }
+
+        // Render Articles
+        function renderArticles() {
+            articlesContainer.innerHTML = '';
+            articles.forEach(a => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="text-[9px] font-black text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded uppercase tracking-widest">${a.cat}</span>
+                    </div>
+                    <h3 class="text-xl font-extrabold text-gray-800 mb-2 leading-tight">${a.title}</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 flex-1">${a.excerpt}</p>
+                    <div class="pt-6 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-gray-300 uppercase">WL 3.0 Report</span>
+                        <button class="text-xs font-black text-gray-900 border-b-2 border-gray-900 hover:text-yellow-600 hover:border-yellow-600 pb-0.5">LEARN MORE</button>
+                    </div>
+                `;
+                articlesContainer.appendChild(card);
+            });
+        }
+
+        // --- CHARTS ---
+        let trainingC = null, marketC = null;
+
+        function initTrainingChart() {
+            const ctx = document.getElementById('trainingChart');
+            if(!ctx || trainingC) return;
+            trainingC = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Coding', 'Trading', 'Economy', 'Security', 'DeFi'],
+                    datasets: [{
+                        label: 'Demand',
+                        data: [95, 88, 72, 90, 85],
+                        backgroundColor: 'rgba(214, 158, 46, 0.2)',
+                        borderColor: '#D69E2E',
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        function initMarketChart() {
+            const ctx = document.getElementById('marketChart');
+            if(!ctx || marketC) return;
+            marketC = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Market Health',
+                        data: [65, 59, 80, 81, 76, 95],
+                        borderColor: '#111827',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(214, 158, 46, 0.05)'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        window.onload = renderArticles;
+    </script>
+</body>
+</html>

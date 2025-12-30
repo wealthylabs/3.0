@@ -1,409 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wealthy Labs 3.0 | Financial Knowledge Academy</title>
-    
+    <title>Wealthy Labs 3.0 | Dashboard</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
+    <!-- SheetJS (Library to read Excel files) -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: '#D69E2E', // Wealthy Labs Gold
+                        'accent-hover': '#B7791F',
+                        bg: '#FAFAFA',
+                        'text-main': '#1A1C1E',
+                        sidebar: '#FFFFFF',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        :root {
-            --accent: #D69E2E;
-            --bg: #FAFAFA;
-            --text-main: #1A1C1E;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            overflow-x: hidden;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
-        /* Banner & Logo */
-        .full-banner {
-            width: 100%;
-            height: 380px;
-            object-fit: cover;
-            display: block;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
         }
 
-        /* Watermark - Side Note Style */
-        .wl-side-note {
-            position: fixed;
-            left: 20px;
-            bottom: 50%;
-            transform: rotate(-90deg) translateX(50%);
-            transform-origin: left bottom;
-            font-size: 11px;
-            font-weight: 800;
-            color: rgba(0,0,0,0.15);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 100;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
-        /* Navigation Styles */
-        .sidebar-item {
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 20px;
-            border-radius: 12px;
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .active-nav-item {
+            border-right: 3px solid #D69E2E;
+            background-color: #FFFBEB;
+            color: #D69E2E;
             font-weight: 600;
-            color: #6B7280;
         }
 
-        .sidebar-item:hover {
-            background-color: #F3F4F6;
-            color: var(--accent);
+        /* Watermark Style */
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.1;
+            pointer-events: none;
+            font-weight: 800;
+            font-size: 4rem;
+            color: #000;
+            z-index: 0;
+            white-space: nowrap;
         }
 
-        .sidebar-item.active {
-            background-color: white;
-            color: var(--accent);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Charts */
-        .chart-box {
-            position: relative;
-            width: 100%;
-            height: 320px;
-        }
-
-        /* Section Transitions */
-        .section-view { display: none; }
-        .section-view.active { display: block; animation: sectionFade 0.4s ease-out; }
-        @keyframes sectionFade {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .social-chip {
-            transition: transform 0.2s ease;
-        }
-        .social-chip:hover {
-            transform: translateY(-2px);
-        }
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             object-fit: cover;
         }
+        .interlink1_logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            object-fit: cover;
+        }
     </style>
-    
-    <!-- Application Structure Plan:
-         1. Full-Width Header: Banner Image -> Sticky Navbar with Logo & Horizontal Social Connects.
-         2. Middle Content Area: Left Navigation (Sidebar) and Right Content (Dynamic Views).
-         3. Full-Width Footer: Comprehensive sitemap and full social directory.
-         4. Branding: Side-note watermark "Wealthy Labs 3.0" + hashtags #interlink #ITLG #ITL.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="antialiased">
 
-    <!-- SIDE NOTE WATERMARK -->
-    <div class="wl-side-note">Wealthy Labs 3.0</div>
+<body class="bg-bg text-text-main h-screen flex overflow-hidden relative">
 
-    <!-- FULL WIDTH HEADER -->
-    <header class="w-full bg-white shadow-sm">
-        <!-- Branding & Quick Links Bar -->
-        <nav class="sticky top-0 bg-white border-b border-gray-100 z-50">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col lg:flex-row justify-between items-center gap-6">
-                <!-- Logo Area -->
-                <div class="flex items-center gap-4">
-                    <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
-                    <div class="h-8 w-px bg-gray-200 hidden sm:block"></div>
-                    <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Wealthy Labs 3.0</p>
-                        <p class="text-xs font-bold text-yellow-600">Learn, Earn - the web 3 way.</p>
-                    </div>
-                </div>
+    <!-- Watermark Background -->
+    <div class="watermark">Wealthy Labs 3.0</div>
 
-                <!-- Quick Connect Socials -->
-                <!-- <div class="flex flex-wrap justify-center items-center gap-5">
-                    <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="social-chip text-green-600 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-whatsapp text-lg"></i> <span class="hidden xl:inline">WhatsApp</span>
-                    </a>
-                    <a href="https://t.me/Prasanna3001" target="_blank" class="social-chip text-blue-500 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-telegram text-lg"></i> <span class="hidden xl:inline">Telegram</span>
-                    </a>
-                    <a href="https://x.com/prasanna3001" target="_blank" class="social-chip text-gray-900 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-x-twitter text-lg"></i> <span class="hidden xl:inline">Twitter</span>
-                    </a>
-                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="social-chip text-red-600 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-youtube text-lg"></i> <span class="hidden xl:inline">YouTube</span>
-                    </a>
-                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-blue-800"><i class="fab fa-facebook w-5"></i> Facebook Page</a>
-                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Threads</a>
-                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Instagram</a>
-                </div> -->
-                <!-- Community Card -->
-                <div class="bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden">
-                    <div class="relative z-10">
-                        <h4 class="font-bold text-sm mb-2">Join the Community</h4>
-                        <p class="text-[11px] opacity-60 mb-4">Connect with @prasanna3001 for real-time market alpha.</p>
-                        <div class="flex gap-2">
-                            <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="social-chip text-green-600 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-whatsapp text-lg"></i> <span class="hidden xl:inline">WhatsApp</span>
-                    </a>
-                    <a href="https://t.me/Prasanna3001" target="_blank" class="social-chip text-blue-500 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-telegram text-lg"></i> <span class="hidden xl:inline">Telegram</span>
-                    </a>
-                    <a href="https://x.com/prasanna3001" target="_blank" class="social-chip text-white-900 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-x-twitter text-lg"></i> <span class="hidden xl:inline">Twitter</span>
-                    </a>
-                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="social-chip text-red-600 flex items-center gap-2 text-sm font-bold">
-                        <i class="fab fa-youtube text-lg"></i> <span class="hidden xl:inline">YouTube</span>
-                    </a>
-                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-blue-800"><i class="fab fa-facebook w-5"></i> Facebook Page</a>
-                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Threads</a>
-                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-3 hover:text-black"><i class="fab fa-at w-5"></i> Instagram</a>
-                        </div>
-                    </div>
-                    <i class="fas fa-users absolute -right-4 -bottom-4 text-7xl opacity-5"></i>
+    <!-- LEFT SIDEBAR -->
+    <aside
+        class="w-80 bg-sidebar border-r border-gray-200 flex flex-col h-full shadow-sm z-20 flex-shrink-0 transition-transform duration-300 transform md:translate-x-0 -translate-x-full absolute md:relative"
+        id="sidebar">
+        <!-- Header -->
+        <div class="h-[84px] flex items-center px-6 border-b border-gray-100 bg-white">
+            <div class="flex items-center gap-3">
+                <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo"
+                    onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
+                <div>
+                    <span class="font-bold text-lg tracking-tight block leading-none">Wealthy Labs 3.0</span>
+                    <span class="text-[10px] text-gray-400 font-medium tracking-wider">Learn, Earn - the web 3
+                        way.</span>
                 </div>
             </div>
-        </nav>
-    </header>
+            <!-- Mobile Close -->
+            <button id="closeSidebar" class="md:hidden ml-auto text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
 
-    <!-- MIDDLE SECTION -->
-    <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-10">
-        
-        <!-- SIDEBAR NAVIGATION -->
-        <aside class="w-full lg:w-72 flex-shrink-0">
-            <div class="lg:sticky lg:top-28 space-y-6">
-                <div class="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm">
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 px-4">Navigation</p>
-                    <nav class="space-y-1">
-                        <div class="sidebar-item active" onclick="switchSection('knowledge', this)">
-                            <i class="fas fa-book-open w-5"></i> Financial Knowledge
-                        </div>
-                        <div class="sidebar-item" onclick="switchSection('training', this)">
-                            <i class="fas fa-graduation-cap w-5"></i> Free Training
-                        </div>
-                        <div class="sidebar-item" onclick="switchSection('earnings', this)">
-                            <i class="fas fa-wallet w-5"></i> Earning Hub
-                        </div>
-                        <div class="sidebar-item" onclick="switchSection('insights', this)">
-                            <i class="fas fa-chart-line w-5"></i> Market Insights
-                        </div>
-                        <div class="sidebar-item" onclick="switchSection('protection', this)">
-                            <i class="fas fa-shield-alt w-5"></i> Protection
-                        </div>
-                    </nav>
-                </div>
-
-                
+        <!-- File Upload Section -->
+        <div class="p-4 border-b border-gray-100 bg-yellow-50/50">
+            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">1. Load Your Data</label>
+            <div class="relative">
+                <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" />
+                <label for="fileInput"
+                    class="flex items-center justify-center w-full px-4 py-2 bg-white border border-dashed border-accent text-accent rounded-lg cursor-pointer hover:bg-yellow-50 transition-colors text-sm font-medium gap-2">
+                    <i class="fa-solid fa-file-excel"></i>
+                    <span id="uploadText">Select Excel/CSV File</span>
+                </label>
             </div>
-        </aside>
+            <p class="text-[10px] text-gray-400 mt-2 text-center">Supported: .xlsx, .csv</p>
+        </div>
 
-        <!-- CONTENT AREA -->
-        <main class="flex-1 min-w-0">
-            
-            <!-- Section: Financial Knowledge -->
-            <section id="knowledge-section" class="section-view active">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Financial Articles</h2>
-                    <p class="text-gray-500">Expert deep-dives into the global economy and local markets.</p>
-                </div>
-                
-                <div id="articles-feed" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Dynamic Articles -->
-                </div>
-            </section>
+        <!-- Search -->
+        <div class="p-4 border-b border-gray-100">
+            <div class="relative">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                <input type="text" id="searchInput" placeholder="Search content..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-accent transition-colors">
+            </div>
+        </div>
 
-            <!-- Section: Free Training -->
-            <section id="training-section" class="section-view">
-                <div class="mb-8">
-                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Free Training Academy</h2>
-                    <p class="text-gray-500">Level up your skills with our complimentary courses.</p>
+        <!-- Navigation Links -->
+        <div class="flex-1 overflow-y-auto py-4" id="navContainer">
+            <!-- Content Injected via JS -->
+            <div class="text-center p-6 text-gray-400 text-sm">
+                <p>No data loaded.</p>
+                <p class="mt-2 text-xs">Upload your Excel file above to see content.</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MOBILE TOGGLE -->
+    <button id="mobileToggle"
+        class="fixed bottom-6 right-6 md:hidden bg-accent text-white p-4 rounded-full shadow-lg z-50 hover:bg-accent-hover transition-colors">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10 bg-white/95 backdrop-blur-sm">
+
+        <!-- Header -->
+        <header class="h-[84px] border-b flex items-center justify-between px-8 flex-shrink-0 bg-white">
+            <!-- Community Card -->
+            <div class="p-6 relative overflow-hidden">
+                <div class="flex gap-2">
+                    <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-whatsapp text-xl text-[#25D366] w-6 text-center"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">WhatsApp</span>
+                </a>
+
+                <!-- Telegram -->
+                <a href="https://t.me/Prasanna3001" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-telegram text-xl text-[#0088cc] w-6 text-center"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">Telegram</span>
+                </a>
+
+                <!-- X (Twitter) -->
+                <a href="https://x.com/prasanna3001" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-x text-xl w-6 text-center text-gray-900"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">Twitter</span>
+                </a>
+
+                <!-- YouTube -->
+                <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-youtube text-xl text-[#FF0000] w-6 text-center"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">YouTube</span>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-facebook text-xl text-[#1877F2] w-6 text-center"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">Facebook</span>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-instagram text-xl text-[#E4405F] w-6 text-center"></i> 
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">Instagram</span>
+                </a>
+
+                <!-- Threads -->
+                <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" 
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-sm group">
+                    <i class="fa-brands fa-threads text-xl text-black w-6 text-center"></i>
+                    <span class="text-gray-600 font-medium group-hover:text-gray-900">Threads</span>
+                </a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                        <h4 class="font-bold text-sm mb-6 uppercase tracking-wider text-gray-400">Skill Distribution</h4>
-                        <div class="chart-box">
-                            <canvas id="trainingChart"></canvas>
+            </div>
+            <div class="p-6 relative overflow-hidden">
+                <div class="flex gap-2">
+                    <img src="Interlink.png" alt="Logo" class="rounded-lg"
+                        onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-10 scroll-smooth" id="mainScroll">
+            <div id="contentArea" class="max-w-4xl mx-auto fade-in min-h-[500px]">
+
+                <!-- Empty State -->
+                <div id="welcomeState" class="text-center py-20 flex flex-col items-center justify-center h-full">
+                    <div
+                        class="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mb-6 text-accent text-4xl shadow-inner">
+                        <i class="fa-solid fa-file-import"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-3">Ready to Load</h1>
+                    <p class="text-gray-500 max-w-md mx-auto mb-8">
+                        Select your <strong>data.csv</strong> or Excel file from the sidebar to populate this dashboard
+                        with your content.
+                    </p>
+                    <div class="p-4 bg-gray-50 rounded border border-gray-200 text-xs text-left inline-block">
+                        <p class="font-bold mb-2 text-gray-700">Required Excel Columns:</p>
+                        <code
+                            class="text-accent">LinkTitle, MainTitle, Category, Date, Content, ImageURL, ExternalURL</code>
+                    </div>
+                </div>
+
+                <!-- Article View -->
+                <article id="articleView" class="hidden pb-20">
+                    <!-- Meta -->
+                    <div class="flex items-center flex-wrap gap-3 mb-6 text-sm">
+                        <span id="displayCategory"
+                            class="px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-xs uppercase tracking-wide">Category</span>
+                        <span class="text-gray-300">|</span>
+                        <span id="displayDate" class="text-gray-500">Date</span>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-gray-400 italic">#interlink #ITLG #ITL</span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 id="displayTitle" class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                        Title Goes Here
+                    </h1>
+
+                    <!-- Featured Image -->
+                    <div id="displayImageContainer"
+                        class="w-full relative rounded-2xl overflow-hidden shadow-lg mb-10 hidden group">
+                        <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-10 transition-opacity">
+                        </div>
+                        <img id="displayImage" src="" alt="Article Image"
+                            class="w-full h-auto object-cover max-h-[500px]">
+                        <!-- Image Watermark Overlay -->
+                        <div
+                            class="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-xs backdrop-blur-md">
+                            Wealthy Labs 3.0
                         </div>
                     </div>
-                    <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-center">
-                        <h4 class="font-bold text-gray-800 mb-2">Current Curriculum</h4>
-                        <ul class="space-y-4">
-                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                <span class="bg-yellow-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                                <div>
-                                    <p class="text-sm font-bold">Python for Trading</p>
-                                    <p class="text-[10px] text-gray-400">Automation & Logic</p>
-                                </div>
-                            </li>
-                            <li class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                <span class="bg-gray-200 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                                <div>
-                                    <p class="text-sm font-bold">Smart Contract Basics</p>
-                                    <p class="text-[10px] text-gray-400">Solidity Intro</p>
-                                </div>
-                            </li>
-                        </ul>
+
+                    <!-- Body Content -->
+                    <div id="displayContent"
+                        class="prose prose-lg prose-slate max-w-none text-gray-600 leading-relaxed">
+                        <!-- Content injected here -->
                     </div>
-                </div>
-            </section>
 
-            <!-- Section: Earning Hub -->
-            <section id="earnings-section" class="section-view">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Earning Opportunities</h2>
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50">
-                            <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                                <th class="px-8 py-4">Opportunity</th>
-                                <th class="px-8 py-4">Difficulty</th>
-                                <th class="px-8 py-4">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-50">
-                            <tr>
-                                <td class="px-8 py-6">
-                                    <p class="font-bold text-gray-800">Interlink Node Setup</p>
-                                    <p class="text-[10px] text-gray-400">Technical testnet reward program.</p>
-                                </td>
-                                <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold">ADVANCED</span></td>
-                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">JOIN LAB</button></td>
-                            </tr>
-                            <tr>
-                                <td class="px-8 py-6">
-                                    <p class="font-bold text-gray-800">Verified Airdrops 101</p>
-                                    <p class="text-[10px] text-gray-400">Daily social tasks for tokens.</p>
-                                </td>
-                                <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold">EASY</span></td>
-                                <td class="px-8 py-6"><button class="bg-gray-900 text-white px-4 py-2 rounded-xl text-xs font-bold">VIEW STEPS</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Section: Market Insights -->
-            <section id="insights-section" class="section-view">
-                <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Market Visualization</h2>
-                <div class="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm">
-                    <h4 class="font-bold text-gray-800 mb-8">Global Market Sentiment Index</h4>
-                    <div class="chart-box">
-                        <canvas id="marketChart"></canvas>
+                    <!-- Footer Tags -->
+                    <div class="mt-12 pt-8 border-t border-gray-100">
+                        <p class="text-sm text-gray-400 font-medium">
+                            Wealthy Labs 3.0 • @prasanna3001 • #ITLG
+                        </p>
                     </div>
-                </div>
-            </section>
+                </article>
 
-        </main>
-    </div>
+            </div>
+        </div>
+    </main>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        const sections = ['knowledge', 'training', 'earnings', 'insights', 'protection'];
-        const articlesContainer = document.getElementById('articles-feed');
+        // DOM Elements
+        const fileInput = document.getElementById('fileInput');
+        const uploadText = document.getElementById('uploadText');
+        const navContainer = document.getElementById('navContainer');
+        const welcomeState = document.getElementById('welcomeState');
+        const articleView = document.getElementById('articleView');
+        const searchInput = document.getElementById('searchInput');
 
-        // Data Store
-        const articles = [
-            { id: 1, title: "The Modular Thesis: Future of #interlink", cat: "Insights", excerpt: "Why infrastructure-centric protocols are outperforming standard layer-1s in the 2025 cycle." },
-            { id: 2, title: "Python for Non-Coders: Part 1", cat: "Training", excerpt: "Setting up your first trading bot environment using zero-cost cloud tools." },
-            { id: 3, title: "Global Inflation & Hard Assets", cat: "Economy", excerpt: "A deep dive into why diversification into digital gold is no longer optional." },
-            { id: 4, title: "DeFi Security Checklist", cat: "Protection", excerpt: "10 things every trader must do before connecting their wallet to a new dApp." }
-        ];
+        // Display Elements
+        const displayTitle = document.getElementById('displayTitle');
+        const displayContent = document.getElementById('displayContent');
+        const displayDate = document.getElementById('displayDate');
+        const displayCategory = document.getElementById('displayCategory');
+        const displayImage = document.getElementById('displayImage');
+        const displayImageContainer = document.getElementById('displayImageContainer');
+        const directLinkBtn = document.getElementById('directLinkBtn');
 
-        // Section Switcher
-        function switchSection(id, btn) {
-            sections.forEach(s => document.getElementById(`${s}-section`).classList.remove('active'));
-            document.getElementById(`${id}-section`).classList.add('active');
-            
-            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-            btn.classList.add('active');
+        // Sidebar logic
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const closeSidebar = document.getElementById('closeSidebar');
 
-            window.scrollTo({ top: 380, behavior: 'smooth' });
+        let globalData = [];
+        let activeId = null;
 
-            if(id === 'training') initTrainingChart();
-            if(id === 'insights') initMarketChart();
-        }
+        // --- 1. EXCEL/CSV PARSING LOGIC ---
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-        // Render Articles
-        function renderArticles() {
-            articlesContainer.innerHTML = '';
-            articles.forEach(a => {
-                const card = document.createElement('div');
-                card.className = "bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow";
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="text-[9px] font-black text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded uppercase tracking-widest">${a.cat}</span>
-                    </div>
-                    <h3 class="text-xl font-extrabold text-gray-800 mb-2 leading-tight">${a.title}</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed mb-8 flex-1">${a.excerpt}</p>
-                    <div class="pt-6 border-t border-gray-50 flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-gray-300 uppercase">WL 3.0 Report</span>
-                        <button class="text-xs font-black text-gray-900 border-b-2 border-gray-900 hover:text-yellow-600 hover:border-yellow-600 pb-0.5">LEARN MORE</button>
-                    </div>
-                `;
-                articlesContainer.appendChild(card);
+            uploadText.textContent = "Loading...";
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const data = e.target.result;
+                const workbook = XLSX.read(data, { type: 'binary' });
+
+                // Get first sheet
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert to JSON
+                const json = XLSX.utils.sheet_to_json(worksheet);
+
+                // Process Data (Add IDs if missing)
+                globalData = json.map((row, index) => ({
+                    id: index,
+                    linkTitle: row.LinkTitle || "Untitled",
+                    mainTitle: row.MainTitle || "Untitled Post",
+                    category: row.Category || "General",
+                    date: row.Date || "",
+                    imageUrl: row.ImageURL || "",
+                    url: row.ExternalURL || "#",
+                    content: row.Content || "<p>No content provided.</p>"
+                }));
+
+                uploadText.textContent = "File Loaded!";
+                renderNavigation(globalData);
+
+                // Load first item automatically
+                if (globalData.length > 0) {
+                    loadContent(0);
+                }
+            };
+
+            reader.readAsBinaryString(file);
+        });
+
+        // --- 2. RENDER NAVIGATION ---
+        function renderNavigation(data) {
+            navContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                navContainer.innerHTML = '<div class="p-4 text-center text-gray-400 text-xs">No matching results</div>';
+                return;
+            }
+
+            // Group by Category
+            const groups = data.reduce((acc, item) => {
+                const cat = item.category || "Uncategorized";
+                (acc[cat] = acc[cat] || []).push(item);
+                return acc;
+            }, {});
+
+            Object.keys(groups).sort().forEach(category => {
+                const items = groups[category];
+
+                // Category Header
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'mb-1';
+
+                const details = document.createElement('details');
+                details.open = true;
+
+                const summary = document.createElement('summary');
+                summary.className = 'list-none cursor-pointer px-6 py-2 text-[11px] font-bold text-gray-400 uppercase hover:text-accent transition-colors flex justify-between items-center tracking-wider';
+                summary.innerHTML = `${category} <i class="fa-solid fa-chevron-down text-[9px]"></i>`;
+
+                const list = document.createElement('div');
+                list.className = 'flex flex-col mt-1';
+
+                items.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = `text-left px-6 py-3 text-sm text-gray-600 hover:bg-gray-50 border-r-[3px] border-transparent transition-all duration-200 w-full truncate ${activeId === item.id ? 'active-nav-item' : ''}`;
+                    btn.innerHTML = `<i class="fa-regular fa-file-lines mr-2 opacity-50 text-xs"></i>${item.linkTitle}`;
+                    btn.onclick = () => loadContent(item.id);
+                    list.appendChild(btn);
+                });
+
+                details.appendChild(summary);
+                details.appendChild(list);
+                groupDiv.appendChild(details);
+                navContainer.appendChild(groupDiv);
             });
         }
 
-        // --- CHARTS ---
-        let trainingC = null, marketC = null;
+        // --- 3. LOAD CONTENT ---
+        function loadContent(id) {
+            const item = globalData.find(d => d.id === id);
+            if (!item) return;
 
-        function initTrainingChart() {
-            const ctx = document.getElementById('trainingChart');
-            if(!ctx || trainingC) return;
-            trainingC = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['Coding', 'Trading', 'Economy', 'Security', 'DeFi'],
-                    datasets: [{
-                        label: 'Demand',
-                        data: [95, 88, 72, 90, 85],
-                        backgroundColor: 'rgba(214, 158, 46, 0.2)',
-                        borderColor: '#D69E2E',
-                        borderWidth: 2
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
+            activeId = id;
+            renderNavigation(globalData); // Refresh active state
+
+            welcomeState.classList.add('hidden');
+            articleView.classList.remove('hidden');
+
+            // Animation
+            const contentArea = document.getElementById('contentArea');
+            contentArea.classList.remove('fade-in');
+            void contentArea.offsetWidth;
+            contentArea.classList.add('fade-in');
+
+            // Populate Fields
+            displayTitle.textContent = item.mainTitle;
+            displayContent.innerHTML = item.content;
+            displayDate.textContent = item.date;
+            displayCategory.textContent = item.category;
+
+            // Handle Image
+            if (item.imageUrl && item.imageUrl.trim().length > 0) {
+                displayImage.src = item.imageUrl;
+                displayImageContainer.classList.remove('hidden');
+            } else {
+                displayImageContainer.classList.add('hidden');
+            }
+
+            // Handle Link
+            if (item.url && item.url !== "#") {
+                directLinkBtn.classList.remove('hidden');
+                directLinkBtn.href = item.url;
+            } else {
+                directLinkBtn.classList.add('hidden');
+            }
+
+            // Scroll top
+            document.getElementById('mainScroll').scrollTop = 0;
+
+            // Mobile: Close sidebar
+            if (window.innerWidth < 768) {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+            }
         }
 
-        function initMarketChart() {
-            const ctx = document.getElementById('marketChart');
-            if(!ctx || marketC) return;
-            marketC = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{
-                        label: 'Market Health',
-                        data: [65, 59, 80, 81, 76, 95],
-                        borderColor: '#111827',
-                        tension: 0.4,
-                        fill: true,
-                        backgroundColor: 'rgba(214, 158, 46, 0.05)'
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
+        // --- 4. SEARCH ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            if (!term) {
+                renderNavigation(globalData);
+                return;
+            }
+            const filtered = globalData.filter(item =>
+                item.linkTitle.toLowerCase().includes(term) ||
+                item.category.toLowerCase().includes(term)
+            );
+            renderNavigation(filtered);
+        });
 
-        window.onload = renderArticles;
+        // --- 5. MOBILE MENU ---
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+        });
+
     </script>
 </body>
+
 </html>
