@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- SheetJS (Library to read Excel files) -->
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <!-- Excel import removed -->
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -75,10 +75,30 @@
         }
 
         .active-nav-item {
-            border-right: 3px solid #D69E2E;
-            background-color: #FFFBEB;
-            color: #D69E2E;
-            font-weight: 600;
+            border-right: 4px solid #D69E2E;
+            background-color: #D97706; /* stronger accent */
+            color: #ffffff !important;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(214,158,46,0.12);
+        }
+
+        /* Keep active nav color on hover */
+        .active-nav-item:hover {
+            background-color: #D97706;
+            color: #ffffff !important;
+        }
+
+        /* Header active link */
+        .header-active {
+            color: #D97706 !important;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        /* Keep header active color on hover */
+        .header-active:hover {
+            color: #D97706 !important;
+            text-decoration: underline;
         }
 
         /* Watermark Style */
@@ -123,7 +143,7 @@
         <div class="h-[84px] flex items-center px-6 border-b border-gray-100 bg-white">
             <div class="flex items-center gap-3">
                 <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo"
-                    onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
+                    onerror="this.src='Code base\\Wealthy Labs 3.0.png'">
                 <div>
                     <span class="font-bold text-lg tracking-tight block leading-none">Wealthy Labs 3.0</span>
                     <span class="text-[10px] text-gray-400 font-medium tracking-wider">Learn, Earn - the web 3 way.</span>
@@ -135,19 +155,7 @@
             </button>
         </div>
 
-        <!-- File Upload Section -->
-        <div class="p-4 border-b border-gray-100 bg-yellow-50/50">
-            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">1. Load Your Data</label>
-            <div class="relative">
-                <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" />
-                <label for="fileInput"
-                    class="flex items-center justify-center w-full px-4 py-2 bg-white border border-dashed border-accent text-accent rounded-lg cursor-pointer hover:bg-yellow-50 transition-colors text-sm font-medium gap-2">
-                    <i class="fa-solid fa-file-excel"></i>
-                    <span id="uploadText">Select Excel/CSV File</span>
-                </label>
-            </div>
-            <p class="text-[10px] text-gray-400 mt-2 text-center">Supported: .xlsx, .csv</p>
-        </div>
+        <!-- Left navigation will list blog posts (Excel import removed) -->
 
         <!-- Search -->
         <div class="p-4 border-b border-gray-100">
@@ -161,10 +169,7 @@
         <!-- Navigation Links -->
         <div class="flex-1 overflow-y-auto py-4" id="navContainer">
             <!-- Content Injected via JS -->
-            <div class="text-center p-6 text-gray-400 text-sm">
-                <p>No data loaded.</p>
-                <p class="mt-2 text-xs">Upload your Excel file above to see content.</p>
-            </div>
+            
         </div>
     </aside>
 
@@ -226,6 +231,12 @@
                 </div>
             </div>
             
+                <!-- Primary Nav: Home / About Us / Events -->
+                <nav class="ml-4 hidden md:flex gap-3 items-center">
+                    <a href="#" id="headerHome" class="text-sm text-gray-700 hover:text-accent px-3 py-2 rounded">Home</a>
+                    <a href="#" id="headerAbout" class="text-sm text-gray-700 hover:text-accent px-3 py-2 rounded">About Us</a>
+                    <a href="#" id="headerEvents" class="text-sm text-gray-700 hover:text-accent px-3 py-2 rounded">Events</a>
+                </nav>
             <div class="hidden md:block p-2">
                  <img src="Interlink.png" alt="Logo" class="rounded-lg h-10 w-auto"
                         onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
@@ -234,192 +245,52 @@
 
         <!-- Content Area -->
         <div class="flex-1 overflow-y-auto p-6 md:p-10 scroll-smooth" id="mainScroll">
-            <div id="contentArea" class="max-w-4xl mx-auto fade-in min-h-[500px]">
-
-                <!-- Empty State -->
-                <div id="welcomeState" class="text-center py-20 flex flex-col items-center justify-center h-full">
-                    <div
-                        class="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mb-6 text-accent text-4xl shadow-inner">
-                        <i class="fa-solid fa-file-import"></i>
-                    </div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-3">Ready to Load</h1>
-                    <p class="text-gray-500 max-w-md mx-auto mb-8">
-                        Select your <strong>data.csv</strong> or Excel file from the sidebar to populate this dashboard
-                        with your content.
-                    </p>
-                    <div class="p-4 bg-gray-50 rounded border border-gray-200 text-xs text-left inline-block">
-                        <p class="font-bold mb-2 text-gray-700">Required Excel Columns:</p>
-                        <code
-                            class="text-accent">LinkTitle, MainTitle, Category, Date, Content, ImageURL, ExternalURL</code>
-                    </div>
-                </div>
-
-                <!-- Article View -->
-                <article id="articleView" class="hidden pb-20">
-                    
-                    <!-- Action Bar (New Location) -->
-                    <div class="flex items-center justify-end gap-3 mb-4">
-                        <button id="copyLinkBtn" class="px-3 py-1.5 border border-gray-200 hover:bg-gray-50 text-gray-600 rounded-lg text-xs font-medium transition-colors" title="Copy Direct Link">
-                            <i class="fa-solid fa-link mr-2"></i> Copy Link
-                        </button>
-                        <a id="directLinkBtn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-medium transition-colors">
-                            <i class="fa-solid fa-external-link-alt mr-2"></i> Visit Source
-                        </a>
-                    </div>
-
-                    <!-- Meta -->
-                    <div class="flex items-center flex-wrap gap-3 mb-6 text-sm">
-                        <span id="displayCategory"
-                            class="px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-xs uppercase tracking-wide">Category</span>
-                        <span class="text-gray-300">|</span>
-                        <span id="displayDate" class="text-gray-500">Date</span>
-                        <span class="text-gray-300">|</span>
-                        <span class="text-gray-400 italic">#interlink #ITLG #ITL</span>
-                    </div>
-
-                    <!-- Title -->
-                    <h1 id="displayTitle" class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
-                        Title Goes Here
-                    </h1>
-
-                    <!-- Featured Image -->
-                    <div id="displayImageContainer"
-                        class="w-full relative rounded-2xl overflow-hidden shadow-lg mb-10 hidden group">
-                        <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-10 transition-opacity">
-                        </div>
-                        <img id="displayImage" src="" alt="Article Image"
-                            class="w-full h-auto object-cover max-h-[500px]">
-                        <!-- Image Watermark Overlay -->
-                        <div
-                            class="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-xs backdrop-blur-md">
-                            Wealthy Labs 3.0
-                        </div>
-                    </div>
-
-                    <!-- Body Content -->
-                    <div id="displayContent"
-                        class="prose prose-lg prose-slate max-w-none text-gray-600 leading-relaxed">
-                        <!-- Content injected here -->
-                    </div>
-
-                    <!-- Footer Tags -->
-                    <div class="mt-12 pt-8 border-t border-gray-100">
-                        <p class="text-sm text-gray-400 font-medium">
-                            Wealthy Labs 3.0 • @prasanna3001 • #ITLG
-                        </p>
-                    </div>
-                </article>
-
+            <div id="contentArea" class="max-w-6xl mx-auto fade-in min-h-[600px] h-[calc(100vh-120px)]">
+                <!-- Main content iframe (loads pages for Home / About / Events / Blog posts) -->
+                <iframe id="contentFrame" src="Code base/index1.html" class="w-full h-full border rounded-lg" style="min-height:500px;" title="Content Frame"></iframe>
             </div>
         </div>
     </main>
 
     <script>
         // DOM Elements
-        const fileInput = document.getElementById('fileInput');
-        const uploadText = document.getElementById('uploadText');
         const navContainer = document.getElementById('navContainer');
-        const welcomeState = document.getElementById('welcomeState');
-        const articleView = document.getElementById('articleView');
         const searchInput = document.getElementById('searchInput');
-
-        // Display Elements
-        const displayTitle = document.getElementById('displayTitle');
-        const displayContent = document.getElementById('displayContent');
-        const displayDate = document.getElementById('displayDate');
-        const displayCategory = document.getElementById('displayCategory');
-        const displayImage = document.getElementById('displayImage');
-        const displayImageContainer = document.getElementById('displayImageContainer');
-        const directLinkBtn = document.getElementById('directLinkBtn');
-        const copyLinkBtn = document.getElementById('copyLinkBtn');
-
-        // Sidebar logic
         const sidebar = document.getElementById('sidebar');
         const mobileToggle = document.getElementById('mobileToggle');
         const closeSidebar = document.getElementById('closeSidebar');
+        const contentFrame = document.getElementById('contentFrame');
+        const mainScroll = document.getElementById('mainScroll');
 
-        let globalData = [];
         let activeId = null;
 
         // --- HELPER: Slugify ---
         function createSlug(text) {
             return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')           // Replace spaces with -
-                .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-                .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-                .replace(/^-+/, '')             // Trim - from start
-                .replace(/-+$/, '');            // Trim - from end
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
         }
 
-        // --- 1. EXCEL/CSV PARSING LOGIC ---
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+        // Static posts (replace or extend as needed)
+        const posts = [
+            { id: 0, title: 'The New Era 2026', src: 'TheNewEra2026.html', category: 'InterLink Labs' },
+            { id: 1, title: '2025 - Achievements', src: '2025Achievements.html', category: 'InterLink Labs' }
+        ];
 
-            uploadText.textContent = "Loading...";
-
-            const reader = new FileReader();
-
-            reader.onload = (e) => {
-                const data = e.target.result;
-                const workbook = XLSX.read(data, { type: 'binary' });
-
-                // Get first sheet
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert to JSON
-                const json = XLSX.utils.sheet_to_json(worksheet);
-
-                // Process Data (Add IDs if missing)
-                globalData = json.map((row, index) => ({
-                    id: index,
-                    linkTitle: row.LinkTitle || "Untitled",
-                    // Create slug from link title or fallback to id
-                    slug: createSlug(row.LinkTitle || "post-" + index),
-                    mainTitle: row.MainTitle || "Untitled Post",
-                    category: row.Category || "General",
-                    date: row.Date || "",
-                    imageUrl: row.ImageURL || "",
-                    url: row.ExternalURL || "#",
-                    content: row.Content || "<p>No content provided.</p>"
-                }));
-
-                uploadText.textContent = "File Loaded!";
-                renderNavigation(globalData);
-
-                // CHECK URL HASH:
-                // If the user opened index.html#my-slug, try to load that row immediately
-                const currentHash = window.location.hash.substring(1); // remove '#'
-                if (currentHash) {
-                    const match = globalData.find(d => d.slug === currentHash);
-                    if (match) {
-                        loadContent(match.id, false); // false = don't double push history
-                    } else {
-                        // Hash didn't match anything, default to first item
-                        loadContent(0);
-                    }
-                } else if(globalData.length > 0) {
-                    // No hash, load first item
-                    loadContent(0);
-                }
-            };
-
-            reader.readAsBinaryString(file);
-        });
-
-        // --- 2. RENDER NAVIGATION ---
+        // Render left navigation from posts
         function renderNavigation(data) {
             navContainer.innerHTML = '';
 
-            if (data.length === 0) {
-                navContainer.innerHTML = '<div class="p-4 text-center text-gray-400 text-xs">No matching results</div>';
+            if (!data || data.length === 0) {
+                navContainer.innerHTML = '<div class="p-4 text-center text-gray-400 text-xs">No posts available</div>';
                 return;
             }
 
-            // Group by Category
             const groups = data.reduce((acc, item) => {
-                const cat = item.category || "Uncategorized";
+                const cat = item.category || 'Uncategorized';
                 (acc[cat] = acc[cat] || []).push(item);
                 return acc;
             }, {});
@@ -427,7 +298,6 @@
             Object.keys(groups).sort().forEach(category => {
                 const items = groups[category];
 
-                // Category Header
                 const groupDiv = document.createElement('div');
                 groupDiv.className = 'mb-1';
 
@@ -444,9 +314,8 @@
                 items.forEach(item => {
                     const btn = document.createElement('button');
                     btn.className = `text-left px-6 py-3 text-sm text-gray-600 hover:bg-gray-50 border-r-[3px] border-transparent transition-all duration-200 w-full truncate ${activeId === item.id ? 'active-nav-item' : ''}`;
-                    btn.innerHTML = `<i class="fa-regular fa-file-lines mr-2 opacity-50 text-xs"></i>${item.linkTitle}`;
-                    // Use routing load logic (true = update URL)
-                    btn.onclick = () => loadContent(item.id, true);
+                    btn.textContent = item.title;
+                    btn.onclick = () => loadToIframe(item.id, true);
                     list.appendChild(btn);
                 });
 
@@ -457,98 +326,63 @@
             });
         }
 
-        // --- 3. LOAD CONTENT (With Hash Routing) ---
-        function loadContent(id, updateUrl = true) {
-            const item = globalData.find(d => d.id === id);
+        function loadToIframe(id, updateHash = true) {
+            const item = posts.find(p => p.id === id);
             if (!item) return;
 
             activeId = id;
+            contentFrame.src = item.src;
 
-            // Update URL Hash
-            if (updateUrl) {
-                // Adds #slug to the URL so it can be copied/shared
-                window.history.pushState(null, null, `#${item.slug}`);
+            if (updateHash) {
+                window.history.pushState(null, null, `#${createSlug(item.title)}`);
             }
 
-            renderNavigation(globalData); // Refresh active state CSS
+            renderNavigation(posts);
+            // clear header active when a sidebar post is selected
+            setHeaderActive(null);
 
-            welcomeState.classList.add('hidden');
-            articleView.classList.remove('hidden');
-
-            // Animation
-            const contentArea = document.getElementById('contentArea');
-            contentArea.classList.remove('fade-in');
-            void contentArea.offsetWidth;
-            contentArea.classList.add('fade-in');
-
-            // Populate Fields
-            displayTitle.textContent = item.mainTitle;
-            displayContent.innerHTML = item.content;
-            displayDate.textContent = item.date;
-            displayCategory.textContent = item.category;
-
-            // Handle Image
-            if (item.imageUrl && item.imageUrl.trim().length > 0) {
-                displayImage.src = item.imageUrl;
-                displayImageContainer.classList.remove('hidden');
-            } else {
-                displayImageContainer.classList.add('hidden');
-            }
-
-            // Handle Link
-            if (item.url && item.url !== "#") {
-                directLinkBtn.classList.remove('hidden');
-                directLinkBtn.href = item.url;
-            } else {
-                directLinkBtn.classList.add('hidden');
-            }
-
-            // Scroll top
-            document.getElementById('mainScroll').scrollTop = 0;
-
-            // Mobile: Close sidebar
+            // Mobile: close sidebar after selection
             if (window.innerWidth < 768) {
                 sidebar.classList.remove('translate-x-0');
                 sidebar.classList.add('-translate-x-full');
             }
         }
 
-        // --- 4. COPY LINK FEATURE ---
-        copyLinkBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                const originalHtml = copyLinkBtn.innerHTML;
-                copyLinkBtn.innerHTML = '<i class="fa-solid fa-check mr-2 text-green-600"></i> Copied!';
-                setTimeout(() => {
-                    copyLinkBtn.innerHTML = originalHtml;
-                }, 2000);
-            });
-        });
-
-        // --- 5. BROWSER BACK BUTTON SUPPORT ---
-        window.addEventListener('hashchange', () => {
-            const hash = window.location.hash.substring(1);
-            // If user hits back/forward, verify if hash exists in data
-            const item = globalData.find(d => d.slug === hash);
-            if (item) {
-                loadContent(item.id, false); // Don't push state again, just load
-            }
-        });
-
-        // --- 6. SEARCH ---
+        // Search
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             if (!term) {
-                renderNavigation(globalData);
+                renderNavigation(posts);
                 return;
             }
-            const filtered = globalData.filter(item =>
-                item.linkTitle.toLowerCase().includes(term) ||
-                item.category.toLowerCase().includes(term)
+            const filtered = posts.filter(item =>
+                item.title.toLowerCase().includes(term) ||
+                (item.category || '').toLowerCase().includes(term)
             );
             renderNavigation(filtered);
         });
 
-        // --- 7. MOBILE MENU ---
+        // Header links
+        const headerHome = document.getElementById('headerHome');
+        const headerAbout = document.getElementById('headerAbout');
+        const headerEvents = document.getElementById('headerEvents');
+
+        function setHeaderActive(key) {
+            [headerHome, headerAbout, headerEvents].forEach(el => {
+                if (!el) return;
+                el.classList.remove('header-active');
+            });
+            if (!key) return;
+            if (key === 'home' && headerHome) headerHome.classList.add('header-active');
+            if (key === 'about' && headerAbout) headerAbout.classList.add('header-active');
+            if (key === 'events' && headerEvents) headerEvents.classList.add('header-active');
+        }
+
+        if (headerHome) headerHome.addEventListener('click', (e) => { e.preventDefault(); contentFrame.src = 'Code base/index1.html'; activeId = null; renderNavigation(posts); setHeaderActive('home'); });
+        if (headerAbout) headerAbout.addEventListener('click', (e) => { e.preventDefault(); contentFrame.src = 'Code base/BaseTemplate.html'; activeId = null; renderNavigation(posts); setHeaderActive('about'); });
+        if (headerEvents) headerEvents.addEventListener('click', (e) => { e.preventDefault(); contentFrame.src = 'Code base/events.html'; activeId = null; renderNavigation(posts); setHeaderActive('events'); });
+
+        // Mobile menu
         mobileToggle.addEventListener('click', () => {
             sidebar.classList.remove('-translate-x-full');
             sidebar.classList.add('translate-x-0');
@@ -559,6 +393,29 @@
             sidebar.classList.add('-translate-x-full');
         });
 
+        // Ensure navigation is generated immediately, then handle initial load / hash
+        renderNavigation(posts);
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const match = posts.find(p => createSlug(p.title) === hash);
+                if (match) {
+                    loadToIframe(match.id, false);
+                    return;
+                }
+            }
+            // default
+            loadToIframe(posts[0].id, false);
+        });
+
+        // Back/forward support
+        window.addEventListener('popstate', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const match = posts.find(p => createSlug(p.title) === hash);
+                if (match) loadToIframe(match.id, false);
+            }
+        });
     </script>
 </body>
 
