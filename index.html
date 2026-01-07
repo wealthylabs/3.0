@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<!-- saved from url=(0103)file:///C:/Prasanna/Wealthylabs/3.0/Core%20website%20Genrator.html#interlink-treasury-asset-declaration -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wealthy Labs 3.0 | Dashboard</title>
 
     <!-- Tailwind CSS -->
-    <script src="./index_files/saved_resource"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- SheetJS (Library to read Excel files) -->
-    <script src="./index_files/xlsx.full.min.js.download"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
     <!-- Icons -->
-    <link rel="stylesheet" href="./index_files/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- Fonts -->
-    <link href="./index_files/css2" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
 
     <script>
         tailwind.config = {
@@ -106,7 +108,7 @@
             object-fit: cover;
         }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"Plus Jakarta Sans", sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.bottom-4{bottom:1rem}.bottom-6{bottom:1.5rem}.left-3{left:0.75rem}.right-4{right:1rem}.right-6{right:1.5rem}.top-3{top:0.75rem}.z-10{z-index:10}.z-20{z-index:20}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-auto{margin-left:auto}.mr-2{margin-right:0.5rem}.mt-12{margin-top:3rem}.mt-2{margin-top:0.5rem}.mb-1{margin-bottom:0.25rem}.mt-1{margin-top:0.25rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.hidden{display:none}.h-10{height:2.5rem}.h-24{height:6rem}.h-\[84px\]{height:84px}.h-auto{height:auto}.h-full{height:100%}.h-screen{height:100vh}.max-h-\[500px\]{max-height:500px}.min-h-\[500px\]{min-height:500px}.w-24{width:6rem}.w-80{width:20rem}.w-auto{width:auto}.w-full{width:100%}.max-w-4xl{max-width:56rem}.max-w-md{max-width:28rem}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.-translate-x-full{--tw-translate-x:-100%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.list-none{list-style-type:none}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.scroll-smooth{scroll-behavior:smooth}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-r-\[3px\]{border-right-width:3px}.border-dashed{border-style:dashed}.border-accent{--tw-border-opacity:1;border-color:rgb(214 158 46 / var(--tw-border-opacity, 1))}.border-gray-100{--tw-border-opacity:1;border-color:rgb(243 244 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-accent{--tw-bg-opacity:1;background-color:rgb(214 158 46 / var(--tw-bg-opacity, 1))}.bg-accent\/10{background-color:rgb(214 158 46 / 0.1)}.bg-bg{--tw-bg-opacity:1;background-color:rgb(250 250 250 / var(--tw-bg-opacity, 1))}.bg-black\/5{background-color:rgb(0 0 0 / 0.05)}.bg-black\/70{background-color:rgb(0 0 0 / 0.7)}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-sidebar{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/95{background-color:rgb(255 255 255 / 0.95)}.bg-yellow-50{--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity, 1))}.bg-yellow-50\/50{background-color:rgb(254 252 232 / 0.5)}.object-cover{object-fit:cover}.p-2{padding:0.5rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pb-20{padding-bottom:5rem}.pl-9{padding-left:2.25rem}.pr-3{padding-right:0.75rem}.pt-8{padding-top:2rem}.text-left{text-align:left}.text-center{text-align:center}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-\[10px\]{font-size:10px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.font-bold{font-weight:700}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wide{letter-spacing:0.025em}.tracking-wider{letter-spacing:0.05em}.text-\[\#0088cc\]{--tw-text-opacity:1;color:rgb(0 136 204 / var(--tw-text-opacity, 1))}.text-\[\#1877F2\]{--tw-text-opacity:1;color:rgb(24 119 242 / var(--tw-text-opacity, 1))}.text-\[\#25D366\]{--tw-text-opacity:1;color:rgb(37 211 102 / var(--tw-text-opacity, 1))}.text-\[\#E4405F\]{--tw-text-opacity:1;color:rgb(228 64 95 / var(--tw-text-opacity, 1))}.text-\[\#FF0000\]{--tw-text-opacity:1;color:rgb(255 0 0 / var(--tw-text-opacity, 1))}.text-accent{--tw-text-opacity:1;color:rgb(214 158 46 / var(--tw-text-opacity, 1))}.text-black{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity, 1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.text-text-main{--tw-text-opacity:1;color:rgb(26 28 30 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-0{opacity:0}.opacity-50{opacity:0.5}.shadow-inner{--tw-shadow:inset 0 2px 4px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:inset 0 2px 4px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-300{transition-duration:300ms}.duration-200{transition-duration:200ms}.hover\:bg-accent-hover:hover{--tw-bg-opacity:1;background-color:rgb(183 121 31 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.hover\:bg-gray-50:hover{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.hover\:bg-yellow-50:hover{--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity, 1))}.hover\:text-gray-600:hover{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.hover\:text-accent:hover{--tw-text-opacity:1;color:rgb(214 158 46 / var(--tw-text-opacity, 1))}.focus\:border-accent:focus{--tw-border-opacity:1;border-color:rgb(214 158 46 / var(--tw-border-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.group:hover .group-hover\:text-gray-900{--tw-text-opacity:1;color:rgb(17 24 39 / var(--tw-text-opacity, 1))}.group:hover .group-hover\:opacity-10{opacity:0.1}@media (min-width: 768px){.md\:relative{position:relative}.md\:block{display:block}.md\:hidden{display:none}.md\:h-\[84px\]{height:84px}.md\:w-auto{width:auto}.md\:translate-x-0{--tw-translate-x:0px;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.md\:flex-row{flex-direction:row}.md\:p-10{padding:2.5rem}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:py-0{padding-top:0px;padding-bottom:0px}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-sm{font-size:0.875rem;line-height:1.25rem}}@media (min-width: 1024px){.lg\:inline{display:inline}}</style></head>
+</head>
 
 <body class="bg-bg text-text-main h-screen flex overflow-hidden relative">
 
@@ -114,11 +116,14 @@
     <div class="watermark">Wealthy Labs 3.0</div>
 
     <!-- LEFT SIDEBAR -->
-    <aside class="w-80 bg-sidebar border-r border-gray-200 flex flex-col h-full shadow-sm z-20 flex-shrink-0 transition-transform duration-300 transform md:translate-x-0 -translate-x-full absolute md:relative" id="sidebar">
+    <aside
+        class="w-80 bg-sidebar border-r border-gray-200 flex flex-col h-full shadow-sm z-20 flex-shrink-0 transition-transform duration-300 transform md:translate-x-0 -translate-x-full absolute md:relative"
+        id="sidebar">
         <!-- Header -->
         <div class="h-[84px] flex items-center px-6 border-b border-gray-100 bg-white">
             <div class="flex items-center gap-3">
-                <img src="./index_files/Wealthy Labs 3.0.png" alt="Logo" class="logo" onerror="this.src=&#39;https://via.placeholder.com/150x50?text=WL3.0&#39;">
+                <img src="Wealthy Labs 3.0.png" alt="Logo" class="logo"
+                    onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
                 <div>
                     <span class="font-bold text-lg tracking-tight block leading-none">Wealthy Labs 3.0</span>
                     <span class="text-[10px] text-gray-400 font-medium tracking-wider">Learn, Earn - the web 3 way.</span>
@@ -134,10 +139,11 @@
         <div class="p-4 border-b border-gray-100 bg-yellow-50/50">
             <label class="block text-xs font-bold text-gray-500 uppercase mb-2">1. Load Your Data</label>
             <div class="relative">
-                <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden">
-                <label for="fileInput" class="flex items-center justify-center w-full px-4 py-2 bg-white border border-dashed border-accent text-accent rounded-lg cursor-pointer hover:bg-yellow-50 transition-colors text-sm font-medium gap-2">
+                <input type="file" id="fileInput" accept=".csv, .xlsx, .xls" class="hidden" />
+                <label for="fileInput"
+                    class="flex items-center justify-center w-full px-4 py-2 bg-white border border-dashed border-accent text-accent rounded-lg cursor-pointer hover:bg-yellow-50 transition-colors text-sm font-medium gap-2">
                     <i class="fa-solid fa-file-excel"></i>
-                    <span id="uploadText">File Loaded!</span>
+                    <span id="uploadText">Select Excel/CSV File</span>
                 </label>
             </div>
             <p class="text-[10px] text-gray-400 mt-2 text-center">Supported: .xlsx, .csv</p>
@@ -147,16 +153,24 @@
         <div class="p-4 border-b border-gray-100">
             <div class="relative">
                 <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
-                <input type="text" id="searchInput" placeholder="Search content..." class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-accent transition-colors">
+                <input type="text" id="searchInput" placeholder="Search content..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-accent transition-colors">
             </div>
         </div>
 
         <!-- Navigation Links -->
-        <div class="flex-1 overflow-y-auto py-4" id="navContainer"><div class="mb-1"><details open=""><summary class="list-none cursor-pointer px-6 py-2 text-[11px] font-bold text-gray-400 uppercase hover:text-accent transition-colors flex justify-between items-center tracking-wider">Interlink <i class="fa-solid fa-chevron-down text-[9px]"></i></summary><div class="flex flex-col mt-1"><button class="text-left px-6 py-3 text-sm text-gray-600 hover:bg-gray-50 border-r-[3px] border-transparent transition-all duration-200 w-full truncate active-nav-item"><i class="fa-regular fa-file-lines mr-2 opacity-50 text-xs"></i>InterLink Treasury Asset Declaration</button><button class="text-left px-6 py-3 text-sm text-gray-600 hover:bg-gray-50 border-r-[3px] border-transparent transition-all duration-200 w-full truncate "><i class="fa-regular fa-file-lines mr-2 opacity-50 text-xs"></i>InterLink Treasury Partners</button></div></details></div></div>
+        <div class="flex-1 overflow-y-auto py-4" id="navContainer">
+            <!-- Content Injected via JS -->
+            <div class="text-center p-6 text-gray-400 text-sm">
+                <p>No data loaded.</p>
+                <p class="mt-2 text-xs">Upload your Excel file above to see content.</p>
+            </div>
+        </div>
     </aside>
 
     <!-- MOBILE TOGGLE -->
-    <button id="mobileToggle" class="fixed bottom-6 right-6 md:hidden bg-accent text-white p-4 rounded-full shadow-lg z-50 hover:bg-accent-hover transition-colors">
+    <button id="mobileToggle"
+        class="fixed bottom-6 right-6 md:hidden bg-accent text-white p-4 rounded-full shadow-lg z-50 hover:bg-accent-hover transition-colors">
         <i class="fa-solid fa-bars"></i>
     </button>
 
@@ -168,37 +182,44 @@
             <!-- Community Card -->
             <div class="w-full md:w-auto overflow-x-auto">
                 <div class="flex gap-2 items-center">
-                    <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://whatsapp.com/channel/0029Vb7SDpOCRs1vXWdnyK1E" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-whatsapp text-lg text-[#25D366]"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">WhatsApp</span>
                     </a>
 
-                    <a href="https://t.me/Prasanna3001" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://t.me/Prasanna3001" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-telegram text-lg text-[#0088cc]"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">Telegram</span>
                     </a>
 
-                    <a href="https://x.com/prasanna3001" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://x.com/prasanna3001" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-x-twitter text-lg text-black"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">Twitter</span>
                     </a>
 
-                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://www.youtube.com/@wealthylabs3.0" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-youtube text-lg text-[#FF0000]"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">YouTube</span>
                     </a>
 
-                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://www.facebook.com/wealtylabs3.0" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-facebook text-lg text-[#1877F2]"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">Facebook</span>
                     </a>
 
-                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://www.instagram.com/wealthylabs3.0/" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-instagram text-lg text-[#E4405F]"></i> 
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">Instagram</span>
                     </a>
 
-                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
+                    <a href="https://www.threads.com/@wealthylabs3.0" target="_blank" 
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-all text-xs md:text-sm group flex-shrink-0">
                         <i class="fa-brands fa-threads text-lg text-black"></i>
                         <span class="text-gray-600 font-medium group-hover:text-gray-900 hidden lg:inline">Threads</span>
                     </a>
@@ -206,17 +227,19 @@
             </div>
             
             <div class="hidden md:block p-2">
-                 <img src="./index_files/Interlink.png" alt="Logo" class="rounded-lg h-10 w-auto" onerror="this.src=&#39;https://via.placeholder.com/150x50?text=WL3.0&#39;">
+                 <img src="Interlink.png" alt="Logo" class="rounded-lg h-10 w-auto"
+                        onerror="this.src='https://via.placeholder.com/150x50?text=WL3.0'">
             </div>
         </header>
 
         <!-- Content Area -->
         <div class="flex-1 overflow-y-auto p-6 md:p-10 scroll-smooth" id="mainScroll">
-            <div id="contentArea" class="max-w-4xl mx-auto min-h-[500px] fade-in">
+            <div id="contentArea" class="max-w-4xl mx-auto fade-in min-h-[500px]">
 
                 <!-- Empty State -->
-                <div id="welcomeState" class="text-center py-20 flex flex-col items-center justify-center h-full hidden">
-                    <div class="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mb-6 text-accent text-4xl shadow-inner">
+                <div id="welcomeState" class="text-center py-20 flex flex-col items-center justify-center h-full">
+                    <div
+                        class="w-24 h-24 bg-yellow-50 rounded-full flex items-center justify-center mb-6 text-accent text-4xl shadow-inner">
                         <i class="fa-solid fa-file-import"></i>
                     </div>
                     <h1 class="text-3xl font-bold text-gray-800 mb-3">Ready to Load</h1>
@@ -226,48 +249,58 @@
                     </p>
                     <div class="p-4 bg-gray-50 rounded border border-gray-200 text-xs text-left inline-block">
                         <p class="font-bold mb-2 text-gray-700">Required Excel Columns:</p>
-                        <code class="text-accent">LinkTitle, MainTitle, Category, Date, Content, ImageURL, ExternalURL</code>
+                        <code
+                            class="text-accent">LinkTitle, MainTitle, Category, Date, Content, ImageURL, ExternalURL</code>
                     </div>
                 </div>
 
                 <!-- Article View -->
-                <article id="articleView" class="pb-20">
+                <article id="articleView" class="hidden pb-20">
                     
                     <!-- Action Bar (New Location) -->
                     <div class="flex items-center justify-end gap-3 mb-4">
                         <button id="copyLinkBtn" class="px-3 py-1.5 border border-gray-200 hover:bg-gray-50 text-gray-600 rounded-lg text-xs font-medium transition-colors" title="Copy Direct Link">
                             <i class="fa-solid fa-link mr-2"></i> Copy Link
                         </button>
-                        <a id="directLinkBtn" href="https://interlinklabs.ai/" target="_blank" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-medium transition-colors">
+                        <a id="directLinkBtn" href="#" target="_blank" class="hidden px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-medium transition-colors">
                             <i class="fa-solid fa-external-link-alt mr-2"></i> Visit Source
                         </a>
                     </div>
 
                     <!-- Meta -->
                     <div class="flex items-center flex-wrap gap-3 mb-6 text-sm">
-                        <span id="displayCategory" class="px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-xs uppercase tracking-wide">Interlink</span>
+                        <span id="displayCategory"
+                            class="px-3 py-1 bg-accent/10 text-accent rounded-full font-bold text-xs uppercase tracking-wide">Category</span>
                         <span class="text-gray-300">|</span>
-                        <span id="displayDate" class="text-gray-500">28-12-2025</span>
+                        <span id="displayDate" class="text-gray-500">Date</span>
                         <span class="text-gray-300">|</span>
                         <span class="text-gray-400 italic">#interlink #ITLG #ITL</span>
                     </div>
 
                     <!-- Title -->
-                    <h1 id="displayTitle" class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">Institutions Officially Declare InterLink Token as a Treasury Asset</h1>
+                    <h1 id="displayTitle" class="text-3xl md:text-5xl font-bold text-gray-900 mb-8 leading-tight">
+                        Title Goes Here
+                    </h1>
 
                     <!-- Featured Image -->
-                    <div id="displayImageContainer" class="w-full relative rounded-2xl overflow-hidden shadow-lg mb-10 hidden group">
+                    <div id="displayImageContainer"
+                        class="w-full relative rounded-2xl overflow-hidden shadow-lg mb-10 hidden group">
                         <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-10 transition-opacity">
                         </div>
-                        <img id="displayImage" src="file:///C:/Prasanna/Wealthylabs/3.0/Core%20website%20Genrator.html" alt="Article Image" class="w-full h-auto object-cover max-h-[500px]">
+                        <img id="displayImage" src="" alt="Article Image"
+                            class="w-full h-auto object-cover max-h-[500px]">
                         <!-- Image Watermark Overlay -->
-                        <div class="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-xs backdrop-blur-md">
+                        <div
+                            class="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-xs backdrop-blur-md">
                             Wealthy Labs 3.0
                         </div>
                     </div>
 
                     <!-- Body Content -->
-                    <div id="displayContent" class="prose prose-lg prose-slate max-w-none text-gray-600 leading-relaxed"><div style="font-family:Arial; line-height:1.7; color:#1a1a1a; padding:16px;"><p style="font-size:17px;"><strong>Institutions Officially Declare InterLink Token as a Treasury Asset</strong></p><p style="color:#333;">A group of global institutions has officially declared the InterLink token as part of their long-term treasury and reserve strategies, marking a significant milestone in the maturation of the Human Network economy.</p><div style="margin-top:14px; padding:12px; background:#f5f7fa;"><p><strong>Participating Institutions</strong></p><p>New To The Street (USA)</p><p>AI Supercluster Pte Ltd (Singapore)</p><p>Superior AI Labs Limited (Hong Kong)</p><p>Immersion Consulting Pte Ltd (Singapore)</p><p>Idom Capital Inc (USA)</p><p>HPX LLC (Dubai)</p><p>Qihong Entertainment (Hong Kong)</p></div><div style="margin-top:12px;"><p><strong>Treasury Vision</strong></p><p>The InterLink Treasury is built to protect long-term token value by prioritizing disciplined institutional participation over speculative inflows.</p></div><div style="margin-top:10px;"><p><strong>User Impact</strong></p><p>A more stable economy, stronger long-term value support, and expanding real-world use cases for the InterLink token.</p></div></div></div>
+                    <div id="displayContent"
+                        class="prose prose-lg prose-slate max-w-none text-gray-600 leading-relaxed">
+                        <!-- Content injected here -->
+                    </div>
 
                     <!-- Footer Tags -->
                     <div class="mt-12 pt-8 border-t border-gray-100">
@@ -527,6 +560,6 @@
         });
 
     </script>
+</body>
 
-
-</body></html>
+</html>
