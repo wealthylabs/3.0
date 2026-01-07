@@ -393,20 +393,43 @@
             sidebar.classList.add('-translate-x-full');
         });
 
-        // Ensure navigation is generated immediately, then handle initial load / hash
+        // Ensure navigation is generated immediately, then initialize from URL hash (if present)
         renderNavigation(posts);
-        window.addEventListener('load', () => {
+
+        function initFromHash() {
             const hash = window.location.hash.substring(1);
             if (hash) {
+                // Try to match a post first
                 const match = posts.find(p => createSlug(p.title) === hash);
                 if (match) {
                     loadToIframe(match.id, false);
                     return;
                 }
+
+                // Support header hashes: home / about / events
+                if (hash === createSlug('Home') || hash === 'home') {
+                    contentFrame.src = 'Code base/index1.html';
+                    setHeaderActive('home');
+                    return;
+                }
+                if (hash === createSlug('About Us') || hash === 'about') {
+                    contentFrame.src = 'Code base/BaseTemplate.html';
+                    setHeaderActive('about');
+                    return;
+                }
+                if (hash === createSlug('Events') || hash === 'events') {
+                    contentFrame.src = 'TheNewEra2026.html';
+                    setHeaderActive('events');
+                    return;
+                }
             }
-            // default
+
+            // default: load first post
             loadToIframe(posts[0].id, false);
-        });
+        }
+
+        // initialize immediately (no need to wait for window load)
+        initFromHash();
 
         // Back/forward support
         window.addEventListener('popstate', () => {
